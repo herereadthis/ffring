@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+Flask uses the jinja2 template engine http://jinja.pocoo.org/
+It looks a lot like Django
+base.html serves as the base.
+-->
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Microblog</title>
+      {% else %}
+      <title>Welcome to Microblog</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>Microblog: <a href="/index">Home</a></div>
+        <hr>
+        <!--
+        block control statement to define where derived templates can insert
+        themselves
+        -->
+        {% block content %}{% endblock %}
+    </body>
+</html>
