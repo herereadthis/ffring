@@ -22,3 +22,19 @@ source venv/bin/activate
 (venv) $ pip install python-dotenv
 # environment variables are in .flaskenv
 ```
+
+### Packages
+
+```bash
+# WARNING: RUN THESE INSIDE THE VIRTUAL ENV!
+# DO NOT RUN GLOBALLY!
+
+# Flask is a micro framework for building web applications
+pip install flask
+# python-dotenv sets environment variables
+# environment variables are in .flaskenv
+pip install python-dotenv
+# flask-wtf is a flask extension that is wrapper for WTForms
+# WTForms is a forms framework for python
+pip install flask-wtf
+```
