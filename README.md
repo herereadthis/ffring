@@ -18,9 +18,13 @@ source venv/bin/activate
 (venv) $ export FLASK_APP=microblog.py
 # run it
 (venv) $ flask run
-# okay ignore setting the environment variable
-(venv) $ pip install python-dotenv
-# environment variables are in .flaskenv
+# create the migration repository
+(venv) $ flask db init
+# run the first migration
+(venv) $ flask db migrate -m "users table"
+# apply changes to the DB
+(venv) $ flask db upgrade
+
 ```
 
 ### Packages
@@ -37,4 +41,12 @@ pip install python-dotenv
 # flask-wtf is a flask extension that is wrapper for WTForms
 # WTForms is a forms framework for python
 pip install flask-wtf
+# SQLAlchemy is a Python ORM for PostgreSQL, MySQL, and SQLite
+# Flask-SQLAlchemy is the extension for Flask
+# Object Relational Mapper or ORM allows apps to manage DBs using OOP instead of
+# straight SQL
+pip install flask-sqlalchemy
+# Alembic is a DB migration tool for SQLAlchemy
+# Flask-Migrate is the Flask extension for migrations
+pip install flask-migrate
 ```
