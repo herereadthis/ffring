@@ -3,6 +3,8 @@ __init__.py file is a package, and defines what symbols the package exposes to
 the outside world.
 '''
 from flask import Flask
+# lowercase c is the file, uppercase C is the class name
+from config import Config
 
 # app object is an instance of Flask class
 # __name__ configures app
@@ -12,6 +14,8 @@ app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'my-secret-key'
 # but it's better to put configuration in a separate file.
 # leave this file's concern be creating the app
+# this is better: 
+app.config.from_object(Config)
 
 # bottom import is a workaround to circular imports, a common problem with Flask
 # applications

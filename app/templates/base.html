@@ -13,8 +13,31 @@ base.html serves as the base.
       {% endif %}
     </head>
     <body>
-        <div>Microblog: <a href="/index">Home</a></div>
+        <div>
+            Microblog:
+            {# 
+                these are pointing to the function names in routes.py 
+                Much better than hardcoding the URLs here. That way, there is
+                only one place to find all the endpoints, which makes them
+                easier to change.
+            #}
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
         <hr>
+        {# 
+            with to deal with the result of calling get_flashed_messages(),
+            which comes from flask
+        #}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         <!--
         block control statement to define where derived templates can insert
         themselves

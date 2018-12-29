@@ -8,4 +8,4 @@ class Config(object):
     flask-WTF extension uses the SECRET_KEY to protect against Cross-Site
     Request Forgery (CSRF) attacks
     '''
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'this-string-is-hard-to-guess'
