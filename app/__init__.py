@@ -5,8 +5,9 @@ the outside world.
 from flask import Flask
 # lowercase c is the file, uppercase C is the class name
 from config import Config
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 # app object is an instance of Flask class
 # __name__ configures app
@@ -23,6 +24,12 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 # This object represents the migration engine.
 migrate = Migrate(app, db)
+# initialize login extension
+login = LoginManager(app)
+# this is how you do protected pages, e.g. pages that cannot be seen unless
+# user is authenticated.
+# then, in routes.py, add @login_required decorator
+login.login_view = 'login'
 
 # bottom import is a workaround to circular imports, a common problem with Flask
 # applications

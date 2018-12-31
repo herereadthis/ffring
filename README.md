@@ -51,7 +51,7 @@ pip install flask-sqlalchemy
 pip install flask-migrate
 ```
 
-## DB migration workflow
+### DB migration workflow
 
 ```bash
 # do everything in virtual env
@@ -65,6 +65,8 @@ flask db upgrade
 # undo the last migration
 flask db downgrade
 ```
+
+### querying the DB
 
 ```bash
 # start python in virtual env
@@ -127,4 +129,27 @@ python 3
 # there's a better way than having to import a bunch of stuff into the python
 # shell. Use this in virtual env
 flask shell
+```
+
+### Passwords
+
+```bash
+# Werkzeug implements password hashing. It's a core dependency of Flask, so it
+# is aleady included. do this in python shell:
+from werkzeug.security import generate_password_hash
+hash = generate_password_hash('foobar')
+print(hash)
+# notice that every time you hash it, you get different results, so you can't
+# determine whether 2 users share the same password if they have the same hash
+# verify hash
+from werkzeug.security import check_password_hash
+check_password_hash(hash, 'foobar')
+
+# set the password
+>>> u = User(username='susan', email='susan@example.com')
+>>> u.set_password('mypassword')
+>>> u.check_password('anotherpassword')
+False
+>>> u.check_password('mypassword')
+True
 ```

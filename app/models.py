@@ -1,7 +1,19 @@
 from datetime import datetime
-from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+# import the instances of DB and Login, which are instances of Flask extensions
+from app import db, login
 
-class User(db.Model):
+
+
+class User(UserMixin, db.Model):
+    '''
+    UserMixin adds these to the user model
+    is_authenticated: True if the user has valid credentials, False otherwise.
+    is_active: True if the user's account is active, False otherwise.
+    is_anonymous: False for regular users, True for a special, anonymous user.
+    get_id(): returns a unique identifier for the user as a string.
+    '''
     # id is primary key
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -15,6 +27,15 @@ class User(db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+    def set_password(self, password):
+        '''
+        Generating the hash will give a different hash every time.
+        '''
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
@@ -25,3 +46,18 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}, {}>'.format(self.body, self.user_id)
+
+@login.user_loader
+def load_user(id):
+    '''
+    Flask-login tracks the logged-in user by storing its unique identifier in
+    Flask's user session, which is a storage space assigned to each user who
+    uses the application.
+
+    Each time the logged-in user navigates to a new page, Flask-Login retrieves
+    the session ID of the use, and then loads that user into memory.
+    
+    Flask-Login knows nothing about the DB, so the application has to help it.
+    This extension expects the app to configure a user-loader function, below:
+    '''
+    return User.query.get(int(id))
