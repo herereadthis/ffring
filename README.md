@@ -50,3 +50,81 @@ pip install flask-sqlalchemy
 # Flask-Migrate is the Flask extension for migrations
 pip install flask-migrate
 ```
+
+## DB migration workflow
+
+```bash
+# do everything in virtual env
+# after modifying models, generate new migration script
+flask db migrate
+# apply changes to DB
+flask db upgrade
+# the new migration script will be part of the new version of application when 
+# it is released to the production server, Just run upgrade on prod.
+flask db upgrade
+# undo the last migration
+flask db downgrade
+```
+
+```bash
+# start python in virtual env
+python 3
+# import the DB
+>>> from app import db
+# import the User and Post model
+>>> from app.models import User, Post
+# create a new User instance and add to the DB
+>>> u = User(username='john', email='john@example.com')
+>>> db.session.add(u)
+>>> db.session.commit()
+# create another User instance and add to the DB
+>>> u = User(username='susan', email='susan@example.com')
+>>> db.session.add(u)
+>>> db.session.commit()
+# query the users
+>>> users = User.query.all()
+# print them out
+# you will see ['john', 'susan']
+>>> result = [user.username for user in users]
+>>> print(result)
+# query by ID
+>>> user = User.query.get(1)
+
+# add a post by user 1
+>>> u = User.query.get(1)
+# author is a virtual field created in user model to make foreign keys easier
+# you don't have to deal with IDs, just have the user object
+>>> p = Post(body='My first post!', author=u)
+>>> db.session.add(p)
+>>> db.session.commit()
+# get all posts written by a user
+>>> u = User.query.get(1)
+>>> posts = u.posts.all()
+
+# show posts
+>>> posts = Post.query.all()
+>>> output = [[p.id, p.body, p.author] for p in posts]
+>>> print(output)
+
+# get users in reverse alphabetical order
+>>> User.query.order_by(User.username.desc()).all()
+```
+
+```bash
+# delete all users and posts
+>>> users = User.query.all()
+>>> for u in users:
+...     db.session.delete(u)
+...
+>>> posts = Post.query.all()
+>>> for p in posts:
+...     db.session.delete(p)
+...
+>>> db.session.commit()
+```
+
+```bash
+# there's a better way than having to import a bunch of stuff into the python
+# shell. Use this in virtual env
+flask shell
+```
