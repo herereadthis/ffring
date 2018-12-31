@@ -49,6 +49,8 @@ pip install flask-sqlalchemy
 # Alembic is a DB migration tool for SQLAlchemy
 # Flask-Migrate is the Flask extension for migrations
 pip install flask-migrate
+# Flask-Login is an extension which handles a user's logged in state.
+pip install flask-login
 ```
 
 ### DB migration workflow
