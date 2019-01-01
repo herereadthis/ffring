@@ -155,3 +155,22 @@ False
 >>> u.check_password('mypassword')
 True
 ```
+
+## Debug mode
+
+```bash
+# in virtual env
+# this allows reloading after any save
+export FLASK_DEBUG=1
+# turn it off
+export FLASK_DEBUG=0
+```
+
+```bash
+# test email in virtual env in 1 terminal
+python -m smtpd -n -c DebuggingServer localhost:8025
+# in running terminal
+export MAIL_SERVER=localhost
+export MAIL_PORT=8025
+# then attempt an error
+```
