@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
-from flask_login import current_user, login_user, logout_user
+# login_required is a decorator which restricts a route to logged-in users
+from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 # import the LoginForm and Registration form classes from forms.py
@@ -79,3 +80,20 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+'''
+<username> represents a dynamic part of the route.
+@login_required decorator makes this view restricted to logged-in users
+'''
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    '''
+    first_or_404() method handles <username> that does not exist
+    '''
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('user.html', user=user, posts=posts)
