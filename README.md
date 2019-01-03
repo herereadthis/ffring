@@ -174,3 +174,10 @@ export MAIL_SERVER=localhost
 export MAIL_PORT=8025
 # then attempt an error
 ```
+
+## Unit testing
+
+```bash
+# do this in the virtual env
+python tests.py
+```
