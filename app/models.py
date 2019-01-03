@@ -6,6 +6,15 @@ from hashlib import md5
 from app import db, login
 
 
+'''
+Create followers association table, which represents a many-to-many relationship
+between different users.
+A user has many followers, and a user may follow other users. 
+'''
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
 
 class User(UserMixin, db.Model):
     '''
@@ -26,6 +35,25 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+
+    '''
+    This is a tricky because it's a self-referential relationship.
+    Left-side is User (the class)
+    '''
+    followed = db.relationship(
+        # 'User' is right side of relationship
+        'User', 
+        # secondary configures the association table
+        secondary=followers,
+        # primaryjoin indicates the condition that links the left side entity 
+        # (the follower user) with the association table
+        primaryjoin=(followers.c.follower_id == id),
+        # secondaryjoin indicates the condition that links the right side entity
+        # (the followed user) with the association table
+        secondaryjoin=(followers.c.followed_id == id),
+        # backref defines how this relationship will be accessed from the right
+        # side entity
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -50,6 +78,24 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
+    def followed_posts(self):
+        return Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id).order_by(
+                    Post.timestamp.desc())
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -61,6 +107,7 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}, {}>'.format(self.body, self.user_id)
+
 
 @login.user_loader
 def load_user(id):

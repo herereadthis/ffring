@@ -31,5 +31,6 @@ nosetests.xml
 *.mo
 
 venv/
+microblog.log*
 
 .vscode/
