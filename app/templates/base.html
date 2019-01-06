@@ -22,6 +22,7 @@ base.html serves as the base.
                 easier to change.
             #}
             <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('explore') }}">Explore</a>
             {% if current_user.is_anonymous %}
                 <a href="{{ url_for('login') }}">Login</a>
             {% else %}
