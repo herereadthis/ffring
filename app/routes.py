@@ -32,18 +32,49 @@ def index():
         '''
         return redirect(url_for('index'))
     title = 'Home Page'
-    posts = current_user.followed_posts().all()
-    return render_template('index.html', title=title, form=form, posts=posts)
+    # request.args gets querystring in url, in this case it's ?page=1
+    page = request.args.get('page', 1, type=int)
+    '''
+    paginate is a Pagination object from SQLAlchemy. 
+    items - items from that.
+    has_next - True if there's another page
+    has_prev - True if there's a previous page
+    next_num - number of next page
+    prev_num - number of previous page
+    '''
+    posts = current_user.followed_posts().paginate(
+        # 1st arg: page number, starting from 1
+        page,
+        # 2nd arg: number of items per page
+        app.config['POSTS_PER_PAGE'],
+        # 3rd arg: error flag. show 404 if True, empty list if False
+        False
+    )
+    next_url = url_for('index', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('index', page=posts.prev_num) \
+        if posts.has_prev else None
+    return render_template('index.html', title=title, form=form,
+        posts=posts.items,
+        next_url=next_url,
+        prev_url=prev_url)
 
 
 @app.route('/explore')
 @login_required
 def explore():
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('explore', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('explore', page=posts.prev_num) \
+        if posts.has_prev else None
     '''
     It's reusing the index template, but does not include form.
     '''
-    return render_template('index.html', title='Explore', posts=posts)
+    return render_template('index.html', title='Explore', posts=posts.items,
+        next_url=next_url, prev_url=prev_url)
 
 # The methods argument in the route decorator only accepts GET requests by
 # default.
@@ -108,11 +139,19 @@ def user(username):
     first_or_404() method handles <username> that does not exist
     '''
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('user.html', user=user, posts=posts)
+    page = request.args.get('page', 1, type=int)
+    '''
+    Where does user.posts come from? It's in the User class in models.
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    '''
+    posts = user.posts.order_by(Post.timestamp.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('user', username=user.username, page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('user', username=user.username, page=posts.prev_num) \
+        if posts.has_prev else None
+    return render_template('user.html', user=user, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
 
 @app.route('/follow/<username>')
 @login_required
