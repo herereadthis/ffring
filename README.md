@@ -51,6 +51,10 @@ pip install flask-sqlalchemy
 pip install flask-migrate
 # Flask-Login is an extension which handles a user's logged in state.
 pip install flask-login
+# for sending emails
+pip install flask-mail
+# useful tool for sending json web tokens
+pip install pyjwt
 ```
 
 ### DB migration workflow
@@ -180,4 +184,24 @@ export MAIL_PORT=8025
 ```bash
 # do this in the virtual env
 python tests.py
+```
+
+## Email
+
+```bash
+# do this in the virtual env
+# run a simulated email server
+export MAIL_SERVER=localhost
+export MAIL_PORT=8025
+python -m smtpd -n -c DebuggingServer localhost:8025
+```
+
+```bash
+# do this in the virtual env
+# send emails for realz with gmail
+export MAIL_SERVER=smtp.googlemail.com
+export MAIL_PORT=587
+export MAIL_USE_TLS=1
+export MAIL_USERNAME=<your-gmail-username>
+export MAIL_PASSWORD=<your-gmail-password>
 ```
