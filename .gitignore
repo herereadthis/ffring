@@ -34,3 +34,5 @@ venv/
 microblog.log*
 
 .vscode/
+
+.DS_Store
