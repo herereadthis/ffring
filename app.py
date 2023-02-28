@@ -1,11 +1,11 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 
 
 @app.route('/')
 def hello_geek():
-    return '<h1>Hello from Flask & Docker</h2>'
+    return render_template('index.html')
 
 
 @app.route('/users/<username>')
@@ -18,7 +18,5 @@ def get_user(username):
         return jsonify(user)
 
 if __name__ == "__main__":
-    # app.run()
-    print('hello world!')
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port="8083", debug=True)
 
