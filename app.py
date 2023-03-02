@@ -2,10 +2,12 @@ import json
 from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 
+base_adsb_url = 'adsb.local:8080'
+
 
 @app.route('/')
 def hello_geek():
-    return render_template('index.html')
+    return render_template('index.html', base_url=base_adsb_url)
 
 
 @app.route('/users/<username>')
