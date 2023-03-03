@@ -6,6 +6,7 @@ base_adsb_url = 'http://adsb.local:8080'
 
 stuff = {
     'aircraft_json_url': f'{base_adsb_url}/data/aircraft.json',
+    'title': 'FFring!',
     'urls': [
         {
             'name': 'aircraft JSON',
@@ -18,6 +19,10 @@ stuff = {
         {
             'name': 'Graphs1090',
             'url': f'{base_adsb_url}/graphs1090'
+        },
+        {
+            'name': 'PiAware',
+            'url': f'{base_adsb_url}/'
         }
     ]
 }
