@@ -5,6 +5,12 @@
         <h1>{% block title %}Ffring!{% endblock %}</h1>
     {% endblock %}
     {{ base_url }}
+    <ul>
+        {% for link in urls %}
+            <li><a href="{{ link.url }}">{{ link.name }}</a></li>
+        {% endfor %}
+    </ul>
+        
 
 
 {% endblock %}

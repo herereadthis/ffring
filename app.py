@@ -2,12 +2,30 @@ import json
 from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 
-base_adsb_url = 'adsb.local:8080'
+base_adsb_url = 'http://adsb.local:8080'
+
+stuff = {
+    'aircraft_json_url': f'{base_adsb_url}/data/aircraft.json',
+    'urls': [
+        {
+            'name': 'aircraft JSON',
+            'url': f'{base_adsb_url}/data/aircraft.json'
+        },
+        {
+            'name': 'Tar1090',
+            'url': f'{base_adsb_url}/tar1090'
+        },
+        {
+            'name': 'Graphs1090',
+            'url': f'{base_adsb_url}/graphs1090'
+        }
+    ]
+}
 
 
 @app.route('/')
 def hello_geek():
-    return render_template('index.html', base_url=base_adsb_url)
+    return render_template('index.html', **stuff)
 
 
 @app.route('/users/<username>')
