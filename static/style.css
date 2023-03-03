@@ -1,3 +1,29 @@
+html {
+    font-size: 62.5%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+body, h1, h2, img, ol, ul, p, table, tr, th, td {
+    margin: 0;
+}
+
 body {
-    background-color: #FFF;
+    padding: 0;
+    font-size: 1em;
+    line-height: 1;
+    text-rendering: optimizeLegibility;
+    position: relative;
+    font-family: "Georgia";
+}
+
+h1 {
+    font-size: 3.6rem;
+    line-height: 4.8rem;
+}
+
+.list_item {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
 }
