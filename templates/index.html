@@ -9,4 +9,12 @@
             <li class="list_item"><a href="{{ link.url }}">{{ link.name }}</a></li>
         {% endfor %}
     </ul>
+    <h2>Weather</h2>
+    <ul>
+        <li class="list_item">Weather: {{ weather_report['weather'] }}</li>
+        <li class="list_item">Temperature: {{ weather_report['temp_f'] }}&deg;F / {{ weather_report['temp_c'] }}&deg;C</li>
+        <li class="list_item">Humidity: {{ weather_report['relative_humidity'] }}%</li>
+        <li class="list_item">Wind: {{ weather_report['wind_dir'] }} at {{ weather_report['wind_mph'] }} MPH ({{ weather_report['wind_kt'] }}KT)</li>
+        <li class="list_item">Last updated: {{ weather_report['observation_readable'] }}</li>
+    </ul>
 {% endblock %}
