@@ -21,5 +21,20 @@ create a  pep8 valid and pyling-valid flask restAPI that returns user profiles. 
   Replace /path/to/your/project/directory with the actual path to your project directory.
 * Save and exit the crontab file.
 
+## Local dev
+
+```shell
+# Create local environment directory
+python3 -m venv env
+
+# Activate the virtual environment
+source env/bin/activate
+
+# Install required packages
+pip3 install -r requirements.txt
+
+# start the application
+python3 app.py
+```
 
     

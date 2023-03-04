@@ -1,6 +1,10 @@
 import json
+import requests
+
 from flask import Flask, jsonify, render_template
 app = Flask(__name__)
+
+weather_url = 'https://w1.weather.gov/xml/current_obs/KDCA.xml'
 
 base_adsb_url = 'http://adsb.local:8080'
 
