@@ -1,5 +1,5 @@
 import json
-from src.utils import weather_utils
+from src.utils import weather_utils, dump1090_utils
 
 from flask import Flask, jsonify, render_template
 app = Flask(__name__)
@@ -13,7 +13,15 @@ stuff = {
     'title': 'FFring!',
     'urls': [
         {
-            'name': 'aircraft JSON',
+            'name': 'Receiver JSON',
+            'url': f'{base_adsb_url}/data/receiver.json'
+        },
+        {
+            'name': 'Stats JSON',
+            'url': f'{base_adsb_url}/data/stats.json'
+        },
+        {
+            'name': 'Aircraft JSON',
             'url': f'{base_adsb_url}/data/aircraft.json'
         },
         {
@@ -35,8 +43,10 @@ stuff = {
 @app.route('/')
 def get_index():
     weather_report = weather_utils.get_weather_data('KDCA')
+    receiver_options = dump1090_utils.get_receiver_options(base_adsb_url)
 
     stuff['weather_report'] = weather_report
+    stuff['receiver_options'] = receiver_options
 
     return render_template('index.html', **stuff)
 

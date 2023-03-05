@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'century_book';
+    font-diplay: block;
+    src: url('../fonts/century-book-webfont.woff2') format('woff2'),
+         url('../fonts/century-book-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'century_monospace';
+    font-diplay: block;
+    src: url('../fonts/century_schoolbook_monospace_regular-webfont.woff2') format('woff2'),
+         url('../fonts/century_schoolbook_monospace_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

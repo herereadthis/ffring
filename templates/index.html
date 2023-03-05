@@ -12,9 +12,17 @@
     <h2>Weather</h2>
     <ul>
         <li class="list_item">Weather: {{ weather_report['weather'] }}</li>
-        <li class="list_item">Temperature: {{ weather_report['temp_f'] }}&deg;F / {{ weather_report['temp_c'] }}&deg;C</li>
+        <li class="list_item">Temperature: 
+            <span class="code_text">{{ weather_report['temp_f'] }}&deg;F</span> /
+            <span class="code_text">{{ weather_report['temp_c'] }}&deg;C</span>
+        </li>
         <li class="list_item">Humidity: {{ weather_report['relative_humidity'] }}%</li>
         <li class="list_item">Wind: {{ weather_report['wind_dir'] }} at {{ weather_report['wind_mph'] }} MPH ({{ weather_report['wind_kt'] }}KT)</li>
         <li class="list_item">Last updated: {{ weather_report['observation_readable'] }}</li>
+    </ul>
+    <h2>Receiver Options</h2>
+    <ul>
+        <li class="list_item">Latitude: <span class="code_text">{{ receiver_options['latitude'] }}</span></li>
+        <li class="list_item">Longitude: <span class="code_text">{{ receiver_options['longitude'] }}</span></li>
     </ul>
 {% endblock %}
