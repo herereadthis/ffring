@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'itc_centurybook';
+    src: url('fonts/century-book-webfont.woff2') format('woff2'),
+         url('fonts/century-book-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 html {
     font-size: 62.5%;
     height: 100%;
@@ -15,7 +24,7 @@ body {
     line-height: 1;
     text-rendering: optimizeLegibility;
     position: relative;
-    font-family: "Georgia";
+    font-family: 'itc_centurybook';
 }
 
 h1 {
