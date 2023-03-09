@@ -1,7 +1,8 @@
+import json
 import requests
 import re
-import xml.etree.ElementTree as ET
-import datetime as dt
+# import datetime as dt
+# from pprint import pprint
 
 
 def get_tag_value(root, loc):
@@ -19,34 +20,31 @@ def get_datetime_string(ts):
     return ts.strftime('%Y-%m-%dT%H:%M:%S%z')
 
 
-def get_weather_data(airport):
+def get_weather_data(airport, latitude, longitude):
     """
     Get the current weather data from a specified URL and return as a dictionary
     """
-    weather_url = f'https://w1.weather.gov/xml/current_obs/{airport}.xml'
-    also_weather_url = 'https://api.weather.gov/gridpoints/LWX/91,70/forecast'
-    weather_response = requests.get(weather_url)
-    root = ET.fromstring(weather_response.content)
+    get_grid_url = f'https://api.weather.gov/points/{latitude},{longitude}'
+    # also_weather_url = 'https://api.weather.gov/gridpoints/LWX/91,70/forecast/hourly'
 
-    observation_time_rfc822 = get_tag_value(root, 'observation_time_rfc822')
-    formatted_ts = dt.datetime.strptime(observation_time_rfc822, '%a, %d %b %Y %H:%M:%S %z')
+    grid_response = requests.get(get_grid_url)
+    grid_json_obj = json.loads(grid_response.content)
+    print('retrieved grid response.')
+    forecastHourlyUrl = grid_json_obj['properties']['forecastHourly']
+
+    weather_response = requests.get(forecastHourlyUrl)
+    weather_json_obj = json.loads(weather_response.content)
+    print('retrieved weather response.')
+
+    current_weather = weather_json_obj['properties']['periods'][0]
 
     weather_report = {
-        'observation_ts': get_datetime_string(formatted_ts),
-        'observation_readable': formatted_ts.strftime('%I:%M%p on %a, %d %b'),
-        'weather': get_tag_value(root, 'weather'),
-        'temp_f': get_tag_value(root, 'temp_f'),
-        'temp_c': get_tag_value(root, 'temp_c'),
-        'relative_humidity': get_tag_value(root, 'relative_humidity'),
-        'wind_dir': get_tag_value(root, 'wind_dir'),
-        'wind_degrees': get_tag_value(root, 'wind_degrees'),
-        'wind_mph': get_tag_value(root, 'wind_mph'),
-        'wind_kt': get_tag_value(root, 'wind_kt'),
-        'pressure_mb': get_tag_value(root, 'pressure_mb'),
-        'pressure_in': get_tag_value(root, 'pressure_in'),
-        'dewpoint_f': get_tag_value(root, 'dewpoint_f'),
-        'dewpoint_c': get_tag_value(root, 'dewpoint_c'),
-        'visibility_mi': get_tag_value(root, 'visibility_mi')
+        'shortForecast': current_weather['shortForecast'],
+        'temperature': current_weather['temperature'],
+        'relativeHumidity': current_weather['relativeHumidity']['value'],
+        'windDirection': current_weather['windDirection'],
+        'windSpeed': current_weather['windSpeed'],
+        'precipitation': current_weather['probabilityOfPrecipitation']['value']
     }
 
     return weather_report

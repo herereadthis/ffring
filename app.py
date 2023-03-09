@@ -42,10 +42,10 @@ stuff = {
 
 @app.route('/')
 def get_index():
-    weather_report = weather_utils.get_weather_data('KDCA')
     receiver_options = dump1090_utils.get_receiver_options(base_adsb_url)
     latitude = receiver_options["latitude"]
     longitude = receiver_options["longitude"]
+    weather_report = weather_utils.get_weather_data('KDCA', latitude, longitude)
     aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, latitude, longitude)
 
     stuff['weather_report'] = weather_report

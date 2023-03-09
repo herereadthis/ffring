@@ -1,5 +1,4 @@
 import json
-import urllib.request
 import requests
 from adsb_tools.distance.calculate import find_closest
 from pprint import pprint
@@ -86,6 +85,7 @@ def get_receiver_options(base_url):
     
     response = requests.get(receiver_url)
     json_obj = json.loads(response.content)
+    print('retrieved reciever response.')
 
     return {
         'latitude': json_obj['lat'],
@@ -97,7 +97,6 @@ def get_receiver_options(base_url):
 
 def get_aircraft(base_url, latitude, longitude):
     receiver_url = f'{base_url}/data/aircraft.json'
-    print(receiver_url)
 
     # with urllib.request.urlopen(receiver_url) as response:
     #     data = response.read().decode()
@@ -106,6 +105,7 @@ def get_aircraft(base_url, latitude, longitude):
 
     response = requests.get(receiver_url)
     json_obj = json.loads(response.content)
+    print('retrieved aircraft response.')
 
     filtered_aircraft = [
         d for d in json_obj['aircraft']
