@@ -1,16 +1,14 @@
 import json
 import urllib.request
+import requests
 from adsb_tools.distance.calculate import find_closest
 from pprint import pprint
-
-
 
 
 # from typing import List, Dict
 import math
 
 EARTH_RADIUS_KM = 6371.0
-
 
 # def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 def calculate_distance(lat1, lon1, lat2, lon2):
@@ -85,10 +83,9 @@ def add_aircraft_options(aircraft_list, base_lat, base_lon):
 
 def get_receiver_options(base_url):
     receiver_url = f'{base_url}/data/receiver.json'
-
-    with urllib.request.urlopen(receiver_url) as response:
-        data = response.read().decode()
-        json_obj = json.loads(data)
+    
+    response = requests.get(receiver_url)
+    json_obj = json.loads(response.content)
 
     return {
         'latitude': json_obj['lat'],
@@ -102,16 +99,20 @@ def get_aircraft(base_url, latitude, longitude):
     receiver_url = f'{base_url}/data/aircraft.json'
     print(receiver_url)
 
-    with urllib.request.urlopen(receiver_url) as response:
-        data = response.read().decode()
-        json_obj = json.loads(data)
-    
+    # with urllib.request.urlopen(receiver_url) as response:
+    #     data = response.read().decode()
+    #     json_obj = json.loads(data)
+
+
+    response = requests.get(receiver_url)
+    json_obj = json.loads(response.content)
+
     filtered_aircraft = [
         d for d in json_obj['aircraft']
         if "lat" in d and "lon" in d and d["lat"] is not None and d["lon"] is not None
     ]
 
-    mapped_keys = ['lat', 'lon', 'alt_geom', 'hex', "flight", "category"]
+    mapped_keys = ['lat', 'lon', 'alt_geom', 'hex', "flight", "category", "gs", "true_heading"]
     mapped_aircraft = [{k: v for k, v in d.items() if k in mapped_keys} for d in filtered_aircraft]
 
     print(f'latitude: {latitude}')    
@@ -119,5 +120,4 @@ def get_aircraft(base_url, latitude, longitude):
     mapped_aircraft = add_aircraft_options(mapped_aircraft, latitude, longitude)
     pprint(mapped_aircraft[0])
 
-    # closest_dict = find_closest(mapped_aircraft, latitude, longitude)
-    # pprint.pprint(closest_dict)
+    return mapped_aircraft

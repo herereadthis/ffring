@@ -24,6 +24,7 @@ def get_weather_data(airport):
     Get the current weather data from a specified URL and return as a dictionary
     """
     weather_url = f'https://w1.weather.gov/xml/current_obs/{airport}.xml'
+    also_weather_url = 'https://api.weather.gov/gridpoints/LWX/91,70/forecast'
     weather_response = requests.get(weather_url)
     root = ET.fromstring(weather_response.content)
 
