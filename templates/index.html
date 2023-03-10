@@ -11,21 +11,27 @@
     </ul>
     <h2>Closest Aircraft</h2>
     <ul>
-        <li class="list_item">Flight: {{ aircraft_list[0]['flight'] }}</li>
+        <li class="list_item">Flight: 
+            {% if aircraft_list[0]['flight'] is none %}
+                unknown
+            {% else %}
+                <span class="code_text">{{ aircraft_list[0]['flight'] }}</span>
+            {% endif %}
+        </li>
         <li class="list_item">Hex: {{ aircraft_list[0]['hex'] }}</li>
         <li class="list_item">Heading: {{ aircraft_list[0]['true_heading'] }}</li>
         <li class="list_item">Category: {{ aircraft_list[0]['category'] }}</li>
         <li class="list_item">Direction: {{ aircraft_list[0]['direction'] }}</li>
         <li class="list_item">Distance: 
             <span class="code_text">
-                {% if aircraft_list[0]['distance'] > 25 %}
+                {% if aircraft_list[0]['distance'] > 5 %}
                     {{ aircraft_list[0]['distance']|round(2) }} km
                 {% else %}
                     {{ (aircraft_list[0]['distance'] * 1000)|round|int }} m
                 {% endif %}
             </span>
         </li>
-        <li class="list_item">Ground Speed: {{ aircraft_list[0]['gs'] }}</li>
+        <li class="list_item">Ground Speed: <span class="code_text">{{ aircraft_list[0]['gs'] }} KT</span></li>
     </ul>
     <h2>Weather</h2>
     <ul>
@@ -34,12 +40,13 @@
             <span class="code_text">{{ weather_report['temperature'] }}&deg;F</span>
         </li>
         <li class="list_item">Humidity: {{ weather_report['relativeHumidity'] }}%</li>
-        <li class="list_item">Precipitation: {{ weather_report['relatiprecipitationve_humidity'] }}%</li>
-        <li class="list_item">Wind: {{ weather_report['windDirection'] }} at {{ weather_report['windSpeed'] }} MPH</li>
+        <li class="list_item">Precipitation: {{ weather_report['precipitation'] }}%</li>
+        <li class="list_item">Wind: {{ weather_report['windDirection'] }} at {{ weather_report['windSpeed'] }}</li>
+        <li class="list_item">Interval: {{ weather_report['startTime'] }} - {{ weather_report['endTime'] }}</li>
     </ul>
     <h2>Receiver Options</h2>
     <ul>
-        <li class="list_item">Latitude: <span class="code_text">{{ receiver_options['latitude'] }}</span></li>
-        <li class="list_item">Longitude: <span class="code_text">{{ receiver_options['longitude'] }}</span></li>
+        <li class="list_item">Latitude: <span class="code_text">{{ receiver_options['lat'] }}</span></li>
+        <li class="list_item">Longitude: <span class="code_text">{{ receiver_options['lon'] }}</span></li>
     </ul> 
 {% endblock %}

@@ -43,10 +43,10 @@ stuff = {
 @app.route('/')
 def get_index():
     receiver_options = dump1090_utils.get_receiver_options(base_adsb_url)
-    latitude = receiver_options["latitude"]
-    longitude = receiver_options["longitude"]
-    weather_report = weather_utils.get_weather_data('KDCA', latitude, longitude)
-    aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, latitude, longitude)
+    base_lat = receiver_options["lat"]
+    base_lon = receiver_options["lon"]
+    weather_report = weather_utils.get_weather_data(base_lat, base_lon)
+    aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, base_lat, base_lon)
 
     stuff['weather_report'] = weather_report
     stuff['receiver_options'] = receiver_options

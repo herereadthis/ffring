@@ -1,50 +1,76 @@
 import json
 import requests
-import re
-# import datetime as dt
-# from pprint import pprint
+from pprint import pprint
+import pytz
+from datetime import datetime, timezone
+
+def get_current_event(events):
+    """
+    Given a list of events that have start time and end time, return the event
+    that matches the interval for the current time.
+    """
+    current_time = datetime.now(timezone.utc)
+
+    for event in events:
+        start_time = event['startTime']
+        end_time = event['endTime']
+        if isinstance(start_time, str):
+            start_time = datetime.fromisoformat(start_time)
+        if isinstance(end_time, str):
+            end_time = datetime.fromisoformat(end_time)
+        if start_time.tzinfo is None:
+            start_time = start_time.replace(tzinfo=timezone.utc)
+        if end_time.tzinfo is None:
+            end_time = end_time.replace(tzinfo=timezone.utc)
+        if start_time <= current_time <= end_time:
+            return event
+
+    return None
 
 
-def get_tag_value(root, loc):
-    text = root.find(f'.//{loc}').text.strip()
-    # from https://www.regextester.com/104184
-    regex = '^-?([0]{1}\.{1}[0-9]+|[1-9]{1}[0-9]*\.{1}[0-9]+|[0-9]+|0)$'
-    if re.match(regex, text) == None:
-        result = text
-    else:
-        result = float(text)
-    return result
+def get_localized_time(date_time, local_timezone, date_time_format = "%-I:%M%p"):
+    """
+    takes a datetime object and returns a human-readable local time
+    """
+    formatted_time = datetime.fromisoformat(date_time)
+    local_time = formatted_time.astimezone(local_timezone)
+    local_formatted_time = local_time.strftime(date_time_format)
+    return local_formatted_time
 
 
-def get_datetime_string(ts):
-    return ts.strftime('%Y-%m-%dT%H:%M:%S%z')
-
-
-def get_weather_data(airport, latitude, longitude):
+def get_weather_data(latitude, longitude):
     """
     Get the current weather data from a specified URL and return as a dictionary
     """
-    get_grid_url = f'https://api.weather.gov/points/{latitude},{longitude}'
-    # also_weather_url = 'https://api.weather.gov/gridpoints/LWX/91,70/forecast/hourly'
-
-    grid_response = requests.get(get_grid_url)
+    grid_url = f'https://api.weather.gov/points/{latitude},{longitude}'
+    grid_response = requests.get(grid_url)
     grid_json_obj = json.loads(grid_response.content)
-    print('retrieved grid response.')
-    forecastHourlyUrl = grid_json_obj['properties']['forecastHourly']
 
-    weather_response = requests.get(forecastHourlyUrl)
+    grid_properties =  grid_json_obj['properties']
+    grid_timezone =  grid_properties['timeZone']
+    local_timezone = pytz.timezone(grid_timezone)
+    forcast_hourly_url = grid_properties['forecastHourly']
+    weather_response = requests.get(forcast_hourly_url)
     weather_json_obj = json.loads(weather_response.content)
-    print('retrieved weather response.')
 
-    current_weather = weather_json_obj['properties']['periods'][0]
+    current_weather = get_current_event(weather_json_obj['properties']['periods'])
+
+    local_formatted_start_time = get_localized_time(current_weather['startTime'], local_timezone)
+    local_formatted_end_time = get_localized_time(current_weather['endTime'], local_timezone)
 
     weather_report = {
+        'startTime': local_formatted_start_time,
+        'endTime': local_formatted_end_time,
         'shortForecast': current_weather['shortForecast'],
         'temperature': current_weather['temperature'],
         'relativeHumidity': current_weather['relativeHumidity']['value'],
         'windDirection': current_weather['windDirection'],
         'windSpeed': current_weather['windSpeed'],
-        'precipitation': current_weather['probabilityOfPrecipitation']['value']
+        'precipitation': current_weather['probabilityOfPrecipitation']['value'],
+        'period': current_weather,
+        'local_timezone': local_timezone,
+        'grid_url': grid_url,
+        'forcast_hourly_url': forcast_hourly_url
     }
 
     return weather_report
