@@ -18,7 +18,7 @@
                 <span class="code_text">{{ aircraft_list[0]['flight'] }}</span>
             {% endif %}
         </li>
-        <li class="list_item">Hex: {{ aircraft_list[0]['hex'] }}</li>
+        <li class="list_item">ICAO: <span class="code_text">{{ aircraft_list[0]['hex'] }}</span></li>
         <li class="list_item">Heading: {{ aircraft_list[0]['true_heading'] }}</li>
         <li class="list_item">Category: {{ aircraft_list[0]['category'] }}</li>
         <li class="list_item">Direction: {{ aircraft_list[0]['direction'] }}</li>
@@ -44,9 +44,10 @@
         <li class="list_item">Wind: {{ weather_report['windDirection'] }} at {{ weather_report['windSpeed'] }}</li>
         <li class="list_item">Interval: {{ weather_report['startTime'] }} - {{ weather_report['endTime'] }}</li>
     </ul>
-    <h2>Receiver Options</h2>
+    <h2>Base Station</h2>
     <ul>
         <li class="list_item">Latitude: <span class="code_text">{{ receiver_options['lat'] }}</span></li>
         <li class="list_item">Longitude: <span class="code_text">{{ receiver_options['lon'] }}</span></li>
+        <li class="list_item">Timezone: <span class="code_text">{{ local_timezone }}</span></li>
     </ul> 
 {% endblock %}

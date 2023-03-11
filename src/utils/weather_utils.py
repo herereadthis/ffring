@@ -4,6 +4,7 @@ from pprint import pprint
 import pytz
 from datetime import datetime, timezone
 
+
 def get_current_event(events):
     """
     Given a list of events that have start time and end time, return the event
@@ -38,25 +39,34 @@ def get_localized_time(date_time, local_timezone, date_time_format = "%-I:%M%p")
     return local_formatted_time
 
 
-def get_weather_data(latitude, longitude):
+def get_grid_data(latitude, longitude):
     """
-    Get the current weather data from a specified URL and return as a dictionary
+    Gets weather grid data which includes forecast url and local timezone
     """
     grid_url = f'https://api.weather.gov/points/{latitude},{longitude}'
     grid_response = requests.get(grid_url)
     grid_json_obj = json.loads(grid_response.content)
 
     grid_properties =  grid_json_obj['properties']
-    grid_timezone =  grid_properties['timeZone']
-    local_timezone = pytz.timezone(grid_timezone)
+    local_timezone =  grid_properties['timeZone']
     forcast_hourly_url = grid_properties['forecastHourly']
+
+    return forcast_hourly_url, local_timezone
+
+
+def get_weather_data(forcast_hourly_url, local_timezone):
+    """
+    Get the current weather data from a specified URL and return as a dictionary
+    """
+    local_timezone_obj = pytz.timezone(local_timezone)
+
     weather_response = requests.get(forcast_hourly_url)
     weather_json_obj = json.loads(weather_response.content)
 
     current_weather = get_current_event(weather_json_obj['properties']['periods'])
 
-    local_formatted_start_time = get_localized_time(current_weather['startTime'], local_timezone)
-    local_formatted_end_time = get_localized_time(current_weather['endTime'], local_timezone)
+    local_formatted_start_time = get_localized_time(current_weather['startTime'], local_timezone_obj)
+    local_formatted_end_time = get_localized_time(current_weather['endTime'], local_timezone_obj)
 
     weather_report = {
         'startTime': local_formatted_start_time,
@@ -67,10 +77,7 @@ def get_weather_data(latitude, longitude):
         'windDirection': current_weather['windDirection'],
         'windSpeed': current_weather['windSpeed'],
         'precipitation': current_weather['probabilityOfPrecipitation']['value'],
-        'period': current_weather,
-        'local_timezone': local_timezone,
-        'grid_url': grid_url,
-        'forcast_hourly_url': forcast_hourly_url
+        'period': current_weather
     }
 
     return weather_report

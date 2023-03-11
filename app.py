@@ -1,8 +1,10 @@
 import json
 from src.utils import weather_utils, dump1090_utils
+import uuid
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, session
 app = Flask(__name__)
+app.secret_key = str(uuid.uuid4())
 
 weather_url = 'https://w1.weather.gov/xml/current_obs/KDCA.xml'
 
@@ -45,12 +47,23 @@ def get_index():
     receiver_options = dump1090_utils.get_receiver_options(base_adsb_url)
     base_lat = receiver_options["lat"]
     base_lon = receiver_options["lon"]
-    weather_report = weather_utils.get_weather_data(base_lat, base_lon)
+
+    forecast_hourly_url, local_timezone = weather_utils.get_grid_data(base_lat, base_lon)
+
+    if (session.get('forcast_hourly_url') is None or session.get('local_timezone') is None):
+        forecast_hourly_url, local_timezone = weather_utils.get_grid_data(base_lat, base_lon)
+        session['forcast_hourly_url'] = forecast_hourly_url
+        session['local_timezone'] = local_timezone
+
+    weather_report = weather_utils.get_weather_data(session.get('forcast_hourly_url'), session.get('local_timezone'))
     aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, base_lat, base_lon)
+
+    print(session.get('local_timezone'))
 
     stuff['weather_report'] = weather_report
     stuff['receiver_options'] = receiver_options
     stuff['aircraft_list'] = aircraft_list
+    stuff['local_timezone'] = session.get('local_timezone')
 
     return render_template('index.html', **stuff)
 

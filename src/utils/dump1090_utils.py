@@ -15,7 +15,7 @@ def get_receiver_options(base_url):
 
 
 def get_aircraft(base_url, latitude, longitude):
-    aircraft_messages = aircraft.get_aircraft(base_url, True)  
+    aircraft_messages = aircraft.get_aircraft(base_url, True)
     mapped_aircraft = aircraft.add_aircraft_options(aircraft_messages, latitude, longitude)
     pprint(mapped_aircraft[0])
 
