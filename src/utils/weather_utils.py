@@ -48,17 +48,17 @@ def get_grid_data(latitude, longitude):
     grid_json_obj = json.loads(grid_response.content)
 
     grid_properties =  grid_json_obj['properties']
-    local_timezone =  grid_properties['timeZone']
+    local_timezone_name =  grid_properties['timeZone']
     forcast_hourly_url = grid_properties['forecastHourly']
 
-    return forcast_hourly_url, local_timezone
+    return forcast_hourly_url, local_timezone_name
 
 
-def get_weather_data(forcast_hourly_url, local_timezone):
+def get_weather_data(forcast_hourly_url, local_timezone_name):
     """
     Get the current weather data from a specified URL and return as a dictionary
     """
-    local_timezone_obj = pytz.timezone(local_timezone)
+    local_timezone_obj = pytz.timezone(local_timezone_name)
 
     weather_response = requests.get(forcast_hourly_url)
     weather_json_obj = json.loads(weather_response.content)
