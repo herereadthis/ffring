@@ -3,6 +3,8 @@ from src.utils import weather_utils, dump1090_utils
 import uuid
 import time
 import adsb_tools.timezone
+import adsb_tools.receiver
+import adsb_tools.aircraft
 from pprint import pprint
 
 from flask import Flask, jsonify, render_template, session
@@ -48,7 +50,7 @@ stuff = {
 
 @app.route('/')
 def get_index():
-    receiver_options = dump1090_utils.get_receiver_options(base_adsb_url)
+    receiver_options = adsb_tools.receiver.get_receiver(base_adsb_url)
     base_lat = receiver_options["lat"]
     base_lon = receiver_options["lon"]
 
@@ -77,7 +79,7 @@ def get_index():
     aircraft_hex = aircraft_list[0]['hex']
     aircraft_image = {}
     if (aircraft_hex is not None):
-        aircraft_image = dump1090_utils.get_aircraft_image(aircraft_hex)
+        aircraft_image = adsb_tools.aircraft.get_aircraft_image(aircraft_hex)
     
     pprint(aircraft_image['src'])
     photo_e = time.time()
