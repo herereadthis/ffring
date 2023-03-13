@@ -77,11 +77,11 @@ def get_index():
     photo_s = time.time()
     aircraft_e = time.time()
     aircraft_hex = aircraft_list[0]['hex']
+    aircraft_hex = 'aa2b21' 
+    print(aircraft_hex)
     aircraft_image = {}
     if (aircraft_hex is not None):
         aircraft_image = adsb_tools.aircraft.get_aircraft_image(aircraft_hex)
-    
-    pprint(aircraft_image['src'])
     photo_e = time.time()
 
 

@@ -35,6 +35,8 @@
     </ul>
     {% if aircraft_image is defined and aircraft_image|length  %}
         <img src="{{ aircraft_image['src'] }}"/>
+    {% else %}
+        <p><em>(No image found for aircraft)</em></p>
     {% endif %}
     <h2>Weather</h2>
     <ul>

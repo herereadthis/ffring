@@ -44,22 +44,28 @@ body {
 
 
 h1 {
-    font-size: 3.6rem;
-    line-height: 4.8rem;
+    font-size: 4.8rem;
+    line-height: 6.0rem;
     font-weight: normal;
-    padding: 1.2rem 0;
+    padding-top: 1.2rem;
 }
 
 h2 {
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    padding-top: 2.4rem;
+    font-size: 2.4rem;
+    line-height: 3.6rem;
+    padding-top: 3.6rem;
     font-weight: normal;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
 }
 
 .list_item {
     font-size: 1.6rem;
     line-height: 2.4rem;
+    margin-left: 2.4rem;
 }
 
 .code_text {
