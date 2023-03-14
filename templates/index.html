@@ -12,29 +12,39 @@
     <h2>Closest Aircraft</h2>
     <ul>
         <li class="list_item">Flight: 
-            {% if aircraft_list[0]['flight'] is none %}
+            {% if nearest_aircraft['flight'] is none %}
                 unknown
             {% else %}
-                <span class="code_text">{{ aircraft_list[0]['flight'] }}</span>
+                <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
             {% endif %}
         </li>
-        <li class="list_item">ICAO: <span class="code_text">{{ aircraft_list[0]['hex'] }}</span></li>
-        <li class="list_item">Heading: {{ aircraft_list[0]['true_heading'] }}</li>
-        <li class="list_item">Category: {{ aircraft_list[0]['category'] }}</li>
-        <li class="list_item">Direction: {{ aircraft_list[0]['direction'] }}</li>
+        <li class="list_item">ICAO: <span class="code_text">{{ nearest_aircraft['icao'] }}</span></li>
+        <li class="list_item">Heading: {{ nearest_aircraft['true_heading'] }}</li>
+        <li class="list_item">Category: {{ nearest_aircraft['category'] }}</li>
+        <li class="list_item">Direction: {{ nearest_aircraft['direction'] }}</li>
         <li class="list_item">Distance: 
             <span class="code_text">
-                {% if aircraft_list[0]['distance'] > 5 %}
-                    {{ aircraft_list[0]['distance']|round(2) }} km
+                {% if nearest_aircraft['distance'] > 5 %}
+                    {{ nearest_aircraft['distance']|round(2) }} km
                 {% else %}
-                    {{ (aircraft_list[0]['distance'] * 1000)|round|int }} m
+                    {{ (nearest_aircraft['distance'] * 1000)|round|int }} m
                 {% endif %}
             </span>
         </li>
-        <li class="list_item">Ground Speed: <span class="code_text">{{ aircraft_list[0]['gs'] }} KT</span></li>
+        <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
+        <li class="list_item">HexDB: 
+            <ul>
+                <li class="list_item">Aircraft
+                    <a href="{{ nearest_aircraft['hexdb']['aircraft_url'] }}">{{ nearest_aircraft['hexdb']['aircraft_url'] }}</a>
+                </li>
+                <li class="list_item">Conversion:
+                    <a href="{{ nearest_aircraft['hexdb']['conversion_url'] }}">{{ nearest_aircraft['hexdb']['conversion_url'] }}</a>
+                </li>
+            </ul>
+        </li>
     </ul>
     {% if aircraft_image is defined and aircraft_image|length  %}
-        <img src="{{ aircraft_image['src'] }}"/>
+        <img src="{{ nearest_aircraft['image']['src'] }}"/>
     {% else %}
         <p><em>(No image found for aircraft)</em></p>
     {% endif %}
