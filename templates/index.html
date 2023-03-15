@@ -2,12 +2,12 @@
 
 {% block body %}
     {% block header %}
-        <h1>{% block title %}{{ title }}!{% endblock %}</h1>
+        <h1>{% block title %}{{ system['title'] }}!{% endblock %}</h1>
     {% endblock %}
     <ul>
-        {% for link in urls %}
-            <li class="list_item"><a href="{{ link.url }}">{{ link.name }}</a></li>
-        {% endfor %}
+        <li class="list_item"><a href="{{ system['tar1090']['url'] }}">{{ system['tar1090']['label'] }}</a></li>
+        <li class="list_item"><a href="{{ system['graphs1090']['url'] }}">{{ system['graphs1090']['label'] }}</a></li>
+        <li class="list_item"><a href="{{ system['piaware']['url'] }}">{{ system['piaware']['label'] }}</a></li>
     </ul>
     <h2>Closest Aircraft</h2>
     <ul>
@@ -32,16 +32,6 @@
             </span>
         </li>
         <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
-        <li class="list_item">HexDB: 
-            <ul>
-                <li class="list_item">Aircraft
-                    <a href="{{ nearest_aircraft['hexdb']['aircraft_url'] }}">{{ nearest_aircraft['hexdb']['aircraft_url'] }}</a>
-                </li>
-                <li class="list_item">Conversion:
-                    <a href="{{ nearest_aircraft['hexdb']['conversion_url'] }}">{{ nearest_aircraft['hexdb']['conversion_url'] }}</a>
-                </li>
-            </ul>
-        </li>
     </ul>
     {% if aircraft_image is defined and aircraft_image|length  %}
         <img src="{{ nearest_aircraft['image']['src'] }}"/>
@@ -65,4 +55,39 @@
         <li class="list_item">Longitude: <span class="code_text">{{ receiver_options['lon'] }}</span></li>
         <li class="list_item">Timezone: <span class="code_text">{{ local_timezone_name }}</span></li>
     </ul> 
+    <h2>APIs</h2>
+    <ul>
+        <li class="list_item">Aircraft JSON:
+            <a href="{{ system['urls']['aircraft'] }}">{{ system['urls']['aircraft'] }}</a>
+        </li>
+        <li class="list_item">Stats JSON:
+            <a href="{{ system['urls']['stats'] }}">{{ system['urls']['stats'] }}</a>
+        </li>
+        <li class="list_item">Receiver JSON:
+            <a href="{{ system['urls']['receiver'] }}">{{ system['urls']['receiver'] }}</a>
+        </li>
+        <li class="list_item">Weather:
+            <a href="{{ weather_report['forcast_hourly_url'] }}">{{ weather_report['forcast_hourly_url'] }}</a>
+        </li>
+        <li class="list_item">HexDB: 
+            <ul>
+                <li class="list_item">Aircraft
+                    <a href="{{ nearest_aircraft['hexdb']['aircraft_url'] }}">{{ nearest_aircraft['hexdb']['aircraft_url'] }}</a>
+                </li>
+                <li class="list_item">Conversion:
+                    <a href="{{ nearest_aircraft['hexdb']['conversion_url'] }}">{{ nearest_aircraft['hexdb']['conversion_url'] }}</a>
+                </li>
+            </ul>
+        </li>
+        <li class="list_item">AdsbDB: 
+            <ul>
+                <li class="list_item">Aircraft
+                    <a href="{{ nearest_aircraft['adsb_db']['aircraft_url'] }}">{{ nearest_aircraft['adsb_db']['aircraft_url'] }}</a>
+                </li>
+                <li class="list_item">Conversion:
+                    <a href="{{ nearest_aircraft['adsb_db']['conversion_url'] }}">{{ nearest_aircraft['adsb_db']['conversion_url'] }}</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 {% endblock %}

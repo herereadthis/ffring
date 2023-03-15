@@ -17,34 +17,26 @@ weather_url = 'https://w1.weather.gov/xml/current_obs/KDCA.xml'
 base_adsb_url = 'http://adsb.local:8080'
 
 stuff = {
-    'aircraft_json_url': f'{base_adsb_url}/data/aircraft.json',
-    'title': 'FFring!',
-    'urls': [
-        {
-            'name': 'Receiver JSON',
-            'url': f'{base_adsb_url}/data/receiver.json'
-        },
-        {
-            'name': 'Stats JSON',
-            'url': f'{base_adsb_url}/data/stats.json'
-        },
-        {
-            'name': 'Aircraft JSON',
-            'url': f'{base_adsb_url}/data/aircraft.json'
-        },
-        {
-            'name': 'Tar1090',
+    'system': {
+        'tar1090': {
+            'label': 'Tar1090',
             'url': f'{base_adsb_url}/tar1090'
         },
-        {
-            'name': 'Graphs1090',
+        'graphs1090': {
+            'label': 'Graphs1090',
             'url': f'{base_adsb_url}/graphs1090'
         },
-        {
-            'name': 'PiAware',
-            'url': f'{base_adsb_url}/'
-        }
-    ]
+        'piaware': {
+            'label': 'PiAware',
+            'url': f'{base_adsb_url}'
+        },
+        'urls': {
+            'aircraft': f'{base_adsb_url}/data/aircraft.json',
+            'stats': f'{base_adsb_url}/data/stats.json',
+            'receiver': f'{base_adsb_url}/data/receiver.json'
+        },
+        'title': 'FFring!'
+    }
 }
 
 
@@ -74,6 +66,10 @@ def get_index():
     nearest_aircraft['hexdb'] = {
         'aircraft_url': f'https://hexdb.io/api/v1/aircraft/{icao_24}',
         'conversion_url': f'https://hexdb.io/hex-reg?hex={icao_24}'
+    }
+    nearest_aircraft['adsb_db'] = {
+        'aircraft_url': f'https://api.adsbdb.com/v0/aircraft/{icao_24}',
+        'conversion_url': f'https://api.adsbdb.com/v0/mode-s/{icao_24}'
     }
     print(f"nearest_aircraft_icao is {icao_24}")
 

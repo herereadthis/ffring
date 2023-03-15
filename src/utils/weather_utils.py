@@ -77,7 +77,8 @@ def get_weather_data(forcast_hourly_url, local_timezone_name):
         'windDirection': current_weather['windDirection'],
         'windSpeed': current_weather['windSpeed'],
         'precipitation': current_weather['probabilityOfPrecipitation']['value'],
-        'period': current_weather
+        'period': current_weather,
+        'forcast_hourly_url': forcast_hourly_url
     }
 
     return weather_report
