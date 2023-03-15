@@ -20,7 +20,7 @@ body {
 
 #body_container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 2.4rem;
 }
 
 @media (min-width: 600px) {
@@ -32,6 +32,7 @@ body {
 @media (min-width: 1024px) {
     #body_container {
         width: 945px;
+        margin: 0 auto;
     }
 }
 

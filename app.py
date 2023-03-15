@@ -71,21 +71,21 @@ def get_index():
         'aircraft_url': f'https://api.adsbdb.com/v0/aircraft/{icao_24}',
         'conversion_url': f'https://api.adsbdb.com/v0/mode-s/{icao_24}'
     }
-    print(f"nearest_aircraft_icao is {icao_24}")
 
+    print(f"\nCurrent nearest_aircraft_icao is <{icao_24}>\n")
     aircraft_image = {}
-
-    if (not session.get('nearest_aircraft.icao') or session.get('nearest_aircraft.icao') != icao_24):
+    session_icao = session.get('nearest_aircraft', {}).get('icao')
+    print(f"\nPrevious session icao is <{session_icao}>\n")
+    if (not session_icao or session_icao != icao_24):
         print('nearest aircraft not previously detected')
-        session['nearest_aircraft'] = nearest_aircraft
         if (icao_24):
             aircraft_image = adsb_tools.aircraft.get_aircraft_image(icao_24)
-            session['nearest_aircraft']['image'] = aircraft_image
+            nearest_aircraft['image'] = aircraft_image
+        session['nearest_aircraft'] = nearest_aircraft
     else:
         print('still following the same nearest aircraft')
-        aircraft_image = session.get('nearest_aircraft.image', {})
+        aircraft_image = session.get('nearest_aircraft', {}).get('image')
 
-    pprint(session)
 
 
     stuff['weather_report'] = weather_report
@@ -95,7 +95,7 @@ def get_index():
     stuff['aircraft_image'] = aircraft_image
     stuff['nearest_aircraft'] = session.get('nearest_aircraft')
 
-    pprint(stuff['nearest_aircraft'])
+    # pprint(stuff['nearest_aircraft'])
 
     return render_template('index.html', **stuff)
 
