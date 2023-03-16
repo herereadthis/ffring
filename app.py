@@ -1,18 +1,16 @@
 import json
-from src.utils import weather_utils, dump1090_utils
+from src.utils import dump1090_utils
 import uuid
-import time
 import adsb_tools.timezone
 import adsb_tools.receiver
 import adsb_tools.aircraft
+import adsb_tools.weather
 from pprint import pprint
 
 from flask import Flask, jsonify, render_template, session
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
-
-weather_url = 'https://w1.weather.gov/xml/current_obs/KDCA.xml'
 
 base_adsb_url = 'http://adsb.local:8080'
 
@@ -50,15 +48,22 @@ def get_index():
         local_timezone = adsb_tools.timezone.get_timezone_name(base_lat, base_lon)
         session['local_timezone_name'] = local_timezone
 
+    print(12345)
     if (session.get('forcast_hourly_url') is None or session.get('weather_timezone') is None):
-        forecast_hourly_url, weather_timezone_name = weather_utils.get_grid_data(base_lat, base_lon)
+        forecast_hourly_url, weather_timezone_name = adsb_tools.weather.get_grid_data(base_lat, base_lon)
+        print('forecast_hourly_url')
+        print(forecast_hourly_url)
+        print('weather_timezone_name')
+        print(forecast_hourly_url)
         session['forcast_hourly_url'] = forecast_hourly_url
         session['weather_timezone_name'] = weather_timezone_name
 
-    weather_report = weather_utils.get_weather_data(
+    weather_report = adsb_tools.weather.get_weather_data(
         # There should be only one source of truth for timezone name!
         session.get('forcast_hourly_url'), session.get('weather_timezone_name')
     )
+    pprint(weather_report)
+
     aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, base_lat, base_lon)
 
     nearest_aircraft = aircraft_list[0]
@@ -72,21 +77,20 @@ def get_index():
         'conversion_url': f'https://api.adsbdb.com/v0/mode-s/{icao_24}'
     }
 
-    print(f"\nCurrent nearest_aircraft_icao is <{icao_24}>\n")
-    aircraft_image = {}
     session_icao = session.get('nearest_aircraft', {}).get('icao')
-    print(f"\nPrevious session icao is <{session_icao}>\n")
+    aircraft_image = {}
+    print(f"\nPrevious session icao is: {session_icao}")
+    print(f"Current nearest_aircraft_icao is: {icao_24}")
+
     if (not session_icao or session_icao != icao_24):
-        print('nearest aircraft not previously detected')
+        print('Storing new aircraft into session...\n')
         if (icao_24):
             aircraft_image = adsb_tools.aircraft.get_aircraft_image(icao_24)
             nearest_aircraft['image'] = aircraft_image
         session['nearest_aircraft'] = nearest_aircraft
     else:
-        print('still following the same nearest aircraft')
+        print('Session shall continue with current aircraft...\n')
         aircraft_image = session.get('nearest_aircraft', {}).get('image')
-
-
 
     stuff['weather_report'] = weather_report
     stuff['receiver_options'] = receiver_options
@@ -94,8 +98,6 @@ def get_index():
     stuff['local_timezone_name'] = session.get('local_timezone_name')
     stuff['aircraft_image'] = aircraft_image
     stuff['nearest_aircraft'] = session.get('nearest_aircraft')
-
-    # pprint(stuff['nearest_aircraft'])
 
     return render_template('index.html', **stuff)
 
