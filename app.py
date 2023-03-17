@@ -48,25 +48,26 @@ def get_index():
         local_timezone = adsb_tools.timezone.get_timezone_name(base_lat, base_lon)
         session['local_timezone_name'] = local_timezone
 
-    print(12345)
-    if (session.get('forcast_hourly_url') is None or session.get('weather_timezone') is None):
+    if (session.get('forcast_hourly_url') is None or session.get('weather_timezone_name') is None):
+        print('Weather grid data not found. Getting grid data.')
         forecast_hourly_url, weather_timezone_name = adsb_tools.weather.get_grid_data(base_lat, base_lon)
-        print('forecast_hourly_url')
-        print(forecast_hourly_url)
-        print('weather_timezone_name')
-        print(forecast_hourly_url)
+        print(f"forecast_hourly_url: {forecast_hourly_url}")
+        print(f"weather_timezone_name: {weather_timezone_name}")
         session['forcast_hourly_url'] = forecast_hourly_url
         session['weather_timezone_name'] = weather_timezone_name
+    else:
+        print('Weather grid data exists in current session.')
 
     weather_report = adsb_tools.weather.get_weather_data(
         # There should be only one source of truth for timezone name!
         session.get('forcast_hourly_url'), session.get('weather_timezone_name')
     )
-    pprint(weather_report)
 
     aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, base_lat, base_lon)
 
     nearest_aircraft = aircraft_list[0]
+
+
     icao_24 = nearest_aircraft['icao']
     nearest_aircraft['hexdb'] = {
         'aircraft_url': f'https://hexdb.io/api/v1/aircraft/{icao_24}',
@@ -86,20 +87,42 @@ def get_index():
         print('Storing new aircraft into session...\n')
         if (icao_24):
             aircraft_image = adsb_tools.aircraft.get_aircraft_image(icao_24)
+            hex_db_options = adsb_tools.aircraft.get_hex_db_flight(icao_24)
+            adsb_db_options = adsb_tools.aircraft.get_adsb_db_flight(icao_24)
+
+            flight_options = {}
+            if (adsb_db_options):
+                flight_options = adsb_db_options
+            elif (hex_db_options):
+                flight_options= hex_db_options
+
+            pprint(hex_db_options)
+            pprint(adsb_db_options)
+            nearest_aircraft.update(flight_options)
             nearest_aircraft['image'] = aircraft_image
-        session['nearest_aircraft'] = nearest_aircraft
     else:
         print('Session shall continue with current aircraft...\n')
-        aircraft_image = session.get('nearest_aircraft', {}).get('image')
+        nearest_aircraft['country_iso'] = session.get('nearest_aircraft').get('country_iso')
+        nearest_aircraft['country_name'] = session.get('nearest_aircraft').get('country_name')
+        nearest_aircraft['icao_type_code'] = session.get('nearest_aircraft').get('icao_type_code')
+        nearest_aircraft['manufacturer'] = session.get('nearest_aircraft').get('manufacturer')
+        nearest_aircraft['mode_s'] = session.get('nearest_aircraft').get('mode_s')
+        nearest_aircraft['operator_flag_code'] = session.get('nearest_aircraft').get('operator_flag_code')
+        nearest_aircraft['owner'] = session.get('nearest_aircraft').get('owner')
+        nearest_aircraft['registration'] = session.get('nearest_aircraft').get('registration')
+        nearest_aircraft['type'] = session.get('nearest_aircraft').get('type')
+        nearest_aircraft['image'] = session.get('nearest_aircraft').get('image')
+    session['nearest_aircraft'] = nearest_aircraft
+
+    pprint(session['nearest_aircraft'])
 
     stuff['weather_report'] = weather_report
     stuff['receiver_options'] = receiver_options
-    stuff['aircraft_list'] = aircraft_list
     stuff['local_timezone_name'] = session.get('local_timezone_name')
-    stuff['aircraft_image'] = aircraft_image
     stuff['nearest_aircraft'] = session.get('nearest_aircraft')
 
     return render_template('index.html', **stuff)
+
 
 
 @app.route('/users/<username>')

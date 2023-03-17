@@ -18,8 +18,10 @@
                 <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
             {% endif %}
         </li>
+        <li class="list_item">Owner: {{ nearest_aircraft['owner'] }}</li>
+        <li class="list_item">Aircraft: {{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}</li>
         <li class="list_item">ICAO: <span class="code_text">{{ nearest_aircraft['icao'] }}</span></li>
-        <li class="list_item">Heading: {{ nearest_aircraft['true_heading'] }}</li>
+        <li class="list_item">Registration: <span class="code_text">{{ nearest_aircraft['registration'] }}</span></li>
         <li class="list_item">Category: {{ nearest_aircraft['category'] }}</li>
         <li class="list_item">Direction: {{ nearest_aircraft['direction'] }}</li>
         <li class="list_item">Distance: 
@@ -33,7 +35,7 @@
         </li>
         <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
     </ul>
-    {% if aircraft_image is defined and aircraft_image|length  %}
+    {% if nearest_aircraft['image'] is defined and nearest_aircraft['image']|length  %}
         <img src="{{ nearest_aircraft['image']['src'] }}"/>
     {% else %}
         <p><em>(No image found for aircraft)</em></p>
