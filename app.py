@@ -102,16 +102,17 @@ def get_index():
             nearest_aircraft['image'] = aircraft_image
     else:
         print('Session shall continue with current aircraft...\n')
-        nearest_aircraft['country_iso'] = session.get('nearest_aircraft').get('country_iso')
-        nearest_aircraft['country_name'] = session.get('nearest_aircraft').get('country_name')
-        nearest_aircraft['icao_type_code'] = session.get('nearest_aircraft').get('icao_type_code')
-        nearest_aircraft['manufacturer'] = session.get('nearest_aircraft').get('manufacturer')
-        nearest_aircraft['mode_s'] = session.get('nearest_aircraft').get('mode_s')
-        nearest_aircraft['operator_flag_code'] = session.get('nearest_aircraft').get('operator_flag_code')
-        nearest_aircraft['owner'] = session.get('nearest_aircraft').get('owner')
-        nearest_aircraft['registration'] = session.get('nearest_aircraft').get('registration')
-        nearest_aircraft['type'] = session.get('nearest_aircraft').get('type')
-        nearest_aircraft['image'] = session.get('nearest_aircraft').get('image')
+        session_na = session.get('nearest_aircraft')
+        nearest_aircraft['country_iso'] = session_na.get('country_iso')
+        nearest_aircraft['country_name'] = session_na.get('country_name')
+        nearest_aircraft['icao_type_code'] = session_na.get('icao_type_code')
+        nearest_aircraft['manufacturer'] = session_na.get('manufacturer')
+        nearest_aircraft['mode_s'] = session_na.get('mode_s')
+        nearest_aircraft['operator_flag_code'] = session_na.get('operator_flag_code')
+        nearest_aircraft['owner'] = session_na.get('owner')
+        nearest_aircraft['registration'] = session_na.get('registration')
+        nearest_aircraft['type'] = session_na.get('type')
+        nearest_aircraft['image'] = session_na.get('image')
     session['nearest_aircraft'] = nearest_aircraft
 
     pprint(session['nearest_aircraft'])
