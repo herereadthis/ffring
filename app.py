@@ -62,8 +62,8 @@ def get_index():
         session.get('forcast_hourly_url'), session.get('weather_timezone_name')
     )
 
-    new_aircraft_list = Aircraft(base_adsb_url, base_lat, base_lon)
-    icao_24 = new_aircraft_list.nearest_aircraft['icao_24']
+    aircraft = Aircraft(base_adsb_url, base_lat, base_lon)
+    icao_24 = aircraft.nearest_aircraft['icao_24']
 
     session_icao = session.get('nearest_aircraft', {}).get('icao')
     print(f"\nPrevious session icao is: {session_icao}")
@@ -71,11 +71,11 @@ def get_index():
 
     if (not session_icao or session_icao != icao_24):
         print('Storing new aircraft into session...\n')
-        new_aircraft_list.retrieve_external_aircraft_options()
+        aircraft.retrieve_external_aircraft_options()
     else:
         print('Session shall continue with current aircraft...\n')
-        new_aircraft_list.map_static_aircraft_options(session.get('nearest_aircraft'))
-    session['nearest_aircraft'] = new_aircraft_list.nearest_aircraft
+        aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
+    session['nearest_aircraft'] = aircraft.nearest_aircraft
 
     stuff['weather_report'] = weather_report
     stuff['receiver_options'] = receiver_options
