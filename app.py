@@ -1,9 +1,8 @@
 import json
-from src.utils import dump1090_utils
 import uuid
 import adsb_tools.timezone
 import adsb_tools.receiver
-import adsb_tools.aircraft
+from adsb_tools.aircraft import Aircraft
 import adsb_tools.weather
 from pprint import pprint
 
@@ -63,59 +62,20 @@ def get_index():
         session.get('forcast_hourly_url'), session.get('weather_timezone_name')
     )
 
-    aircraft_list = dump1090_utils.get_aircraft(base_adsb_url, base_lat, base_lon)
-
-    nearest_aircraft = aircraft_list[0]
-
-
-    icao_24 = nearest_aircraft['icao']
-    nearest_aircraft['hexdb'] = {
-        'aircraft_url': f'https://hexdb.io/api/v1/aircraft/{icao_24}',
-        'conversion_url': f'https://hexdb.io/hex-reg?hex={icao_24}'
-    }
-    nearest_aircraft['adsb_db'] = {
-        'aircraft_url': f'https://api.adsbdb.com/v0/aircraft/{icao_24}',
-        'conversion_url': f'https://api.adsbdb.com/v0/mode-s/{icao_24}'
-    }
+    new_aircraft_list = Aircraft(base_adsb_url, base_lat, base_lon)
+    icao_24 = new_aircraft_list.nearest_aircraft['icao_24']
 
     session_icao = session.get('nearest_aircraft', {}).get('icao')
-    aircraft_image = {}
     print(f"\nPrevious session icao is: {session_icao}")
     print(f"Current nearest_aircraft_icao is: {icao_24}")
 
     if (not session_icao or session_icao != icao_24):
         print('Storing new aircraft into session...\n')
-        if (icao_24):
-            aircraft_image = adsb_tools.aircraft.get_aircraft_image(icao_24)
-            hex_db_options = adsb_tools.aircraft.get_hex_db_flight(icao_24)
-            adsb_db_options = adsb_tools.aircraft.get_adsb_db_flight(icao_24)
-
-            flight_options = {}
-            if (adsb_db_options):
-                flight_options = adsb_db_options
-            elif (hex_db_options):
-                flight_options= hex_db_options
-
-            pprint(hex_db_options)
-            pprint(adsb_db_options)
-            nearest_aircraft.update(flight_options)
-            nearest_aircraft['image'] = aircraft_image
+        new_aircraft_list.retrieve_external_aircraft_options()
     else:
         print('Session shall continue with current aircraft...\n')
-        session_na = session.get('nearest_aircraft')
-        nearest_aircraft['country_iso'] = session_na.get('country_iso')
-        nearest_aircraft['country_name'] = session_na.get('country_name')
-        nearest_aircraft['icao_type_code'] = session_na.get('icao_type_code')
-        nearest_aircraft['manufacturer'] = session_na.get('manufacturer')
-        nearest_aircraft['mode_s'] = session_na.get('mode_s')
-        nearest_aircraft['operator_flag_code'] = session_na.get('operator_flag_code')
-        nearest_aircraft['owner'] = session_na.get('owner')
-        nearest_aircraft['registration'] = session_na.get('registration')
-        nearest_aircraft['type'] = session_na.get('type')
-        nearest_aircraft['image'] = session_na.get('image')
-    session['nearest_aircraft'] = nearest_aircraft
-
-    pprint(session['nearest_aircraft'])
+        new_aircraft_list.map_static_aircraft_options(session.get('nearest_aircraft'))
+    session['nearest_aircraft'] = new_aircraft_list.nearest_aircraft
 
     stuff['weather_report'] = weather_report
     stuff['receiver_options'] = receiver_options
@@ -123,7 +83,6 @@ def get_index():
     stuff['nearest_aircraft'] = session.get('nearest_aircraft')
 
     return render_template('index.html', **stuff)
-
 
 
 @app.route('/users/<username>')
