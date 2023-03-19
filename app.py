@@ -82,6 +82,8 @@ def get_index():
     stuff['local_timezone_name'] = session.get('local_timezone_name')
     stuff['nearest_aircraft'] = session.get('nearest_aircraft')
 
+    print(aircraft.aircraft_list)
+
     return render_template('index.html', **stuff)
 
 
