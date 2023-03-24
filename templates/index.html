@@ -8,6 +8,7 @@
         <li class="list_item"><a href="{{ system['tar1090']['url'] }}">{{ system['tar1090']['label'] }}</a></li>
         <li class="list_item"><a href="{{ system['graphs1090']['url'] }}">{{ system['graphs1090']['label'] }}</a></li>
         <li class="list_item"><a href="{{ system['piaware']['url'] }}">{{ system['piaware']['label'] }}</a></li>
+        <li class="list_item"><a href="{{ system['ffring_aircraft']['url'] }}">{{ system['ffring_aircraft']['label'] }}</a></li>
     </ul>
     <h2>Closest Aircraft</h2>
     <ul>
@@ -20,7 +21,7 @@
         </li>
         <li class="list_item">Owner: {{ nearest_aircraft['owner'] }}</li>
         <li class="list_item">Aircraft: {{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}</li>
-        <li class="list_item">ICAO: <span class="code_text">{{ nearest_aircraft['icao'] }}</span></li>
+        <li class="list_item">ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Registration: <span class="code_text">{{ nearest_aircraft['registration'] }}</span></li>
         <li class="list_item">Category: {{ nearest_aircraft['category'] }}</li>
         <li class="list_item">Direction: {{ nearest_aircraft['direction'] }}</li>

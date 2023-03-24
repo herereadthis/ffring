@@ -1,12 +1,11 @@
-import json
 import uuid
 import adsb_tools.timezone
 import adsb_tools.receiver
 from adsb_tools.aircraft import Aircraft
 import adsb_tools.weather
-from pprint import pprint
-
-from flask import Flask, jsonify, render_template, session
+# from pprint import pprint
+from flask import Flask, render_template, session, request
+from src.utils.flask_utils import return_json
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
@@ -26,6 +25,10 @@ stuff = {
         'piaware': {
             'label': 'PiAware',
             'url': f'{base_adsb_url}'
+        },
+        'ffring_aircraft': {
+            'label': 'Ffring Aircraft',
+            'url': 'aircraft'
         },
         'urls': {
             'aircraft': f'{base_adsb_url}/data/aircraft.json',
@@ -65,7 +68,7 @@ def get_index():
     aircraft = Aircraft(base_adsb_url, base_lat, base_lon)
     icao_24 = aircraft.nearest_aircraft['icao_24']
 
-    session_icao = session.get('nearest_aircraft', {}).get('icao')
+    session_icao = session.get('nearest_aircraft', {}).get('icao_24')
     print(f"\nPrevious session icao is: {session_icao}")
     print(f"Current nearest_aircraft_icao is: {icao_24}")
 
@@ -77,24 +80,41 @@ def get_index():
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
     session['nearest_aircraft'] = aircraft.nearest_aircraft
 
-    stuff['weather_report'] = weather_report
-    stuff['receiver_options'] = receiver_options
-    stuff['local_timezone_name'] = session.get('local_timezone_name')
-    stuff['nearest_aircraft'] = session.get('nearest_aircraft')
+    params = {
+        'system': stuff['system'],
+        'weather_report': weather_report,
+        'receiver_options': receiver_options,
+        'local_timezone_name': session.get('local_timezone_name'),
+        'nearest_aircraft': session.get('nearest_aircraft')
+    }
+    params['system']['ffring_aircraft']['url'] = f"{request.url_root}{params['system']['ffring_aircraft']['url']}"
 
+    return render_template('index.html', **params)
+
+
+@app.route('/aircraft', methods=['GET'])
+@return_json
+def get_all_aircraft():
+    """
+    Returns JSON of all aircraft messges, augmented with options.
+    """
+    receiver_options = adsb_tools.receiver.get_receiver(base_adsb_url)
+    base_lat = receiver_options["lat"]
+    base_lon = receiver_options["lon"]
+    aircraft = Aircraft(base_adsb_url, base_lat, base_lon)
     print(aircraft.aircraft_list)
 
-    return render_template('index.html', **stuff)
+    return aircraft.aircraft_list
 
 
-@app.route('/users/<username>')
-def get_user(username):
-    with open('static/users.json') as f:
-        users = json.load(f)
-        user = users.get(username)
-        if user is None:
-            return jsonify({'error': 'User not found'}), 404
-        return jsonify(user)
+# @app.route('/users/<username>')
+# def get_user(username):
+#     with open('static/users.json') as f:
+#         users = json.load(f)
+#         user = users.get(username)
+#         if user is None:
+#             return jsonify({'error': 'User not found'}), 404
+#         return jsonify(user)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8083", debug=True)
