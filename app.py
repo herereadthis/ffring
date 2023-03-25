@@ -2,6 +2,7 @@ import uuid
 import adsb_tools.timezone
 import adsb_tools.receiver
 from adsb_tools.aircraft import Aircraft
+from adsb_tools.receiver import Receiver
 import adsb_tools.weather
 # from pprint import pprint
 from flask import Flask, render_template, session, request
@@ -42,9 +43,9 @@ stuff = {
 
 @app.route('/')
 def get_index():
-    receiver_options = adsb_tools.receiver.get_receiver(base_adsb_url)
-    base_lat = receiver_options["lat"]
-    base_lon = receiver_options["lon"]
+    receiver = Receiver(base_adsb_url)
+    base_lat = receiver.lat
+    base_lon = receiver.lon
 
     if (session.get('local_timezone_name') is None):
         local_timezone = adsb_tools.timezone.get_timezone_name(base_lat, base_lon)
@@ -83,11 +84,11 @@ def get_index():
     params = {
         'system': stuff['system'],
         'weather_report': weather_report,
-        'receiver_options': receiver_options,
+        'receiver': receiver,
         'local_timezone_name': session.get('local_timezone_name'),
         'nearest_aircraft': session.get('nearest_aircraft')
     }
-    params['system']['ffring_aircraft']['url'] = f"{request.url_root}{params['system']['ffring_aircraft']['url']}"
+    params['system']['ffring_aircraft']['url'] = f"{request.url_root}aircraft"
 
     return render_template('index.html', **params)
 
@@ -98,10 +99,8 @@ def get_all_aircraft():
     """
     Returns JSON of all aircraft messges, augmented with options.
     """
-    receiver_options = adsb_tools.receiver.get_receiver(base_adsb_url)
-    base_lat = receiver_options["lat"]
-    base_lon = receiver_options["lon"]
-    aircraft = Aircraft(base_adsb_url, base_lat, base_lon)
+    receiver = Receiver(base_adsb_url)
+    aircraft = Aircraft(base_adsb_url, receiver.lat, receiver.lon)
     print(aircraft.aircraft_list)
 
     return aircraft.aircraft_list
