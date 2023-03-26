@@ -3,6 +3,7 @@ import adsb_tools.timezone
 import adsb_tools.receiver
 from adsb_tools.aircraft import Aircraft
 from adsb_tools.receiver import Receiver
+from adsb_tools.wake_vortex import WakeVortexCategories
 import adsb_tools.weather
 # from pprint import pprint
 from flask import Flask, render_template, session, request
@@ -30,6 +31,10 @@ stuff = {
         'ffring_aircraft': {
             'label': 'Ffring Aircraft',
             'url': 'aircraft'
+        },
+        'ffring_wtc': {
+            'label': 'Wake Vortex Categories',
+            'url': 'wtc'
         },
         'urls': {
             'aircraft': f'{base_adsb_url}/data/aircraft.json',
@@ -89,6 +94,7 @@ def get_index():
         'nearest_aircraft': session.get('nearest_aircraft')
     }
     params['system']['ffring_aircraft']['url'] = f"{request.url_root}aircraft"
+    params['system']['ffring_wtc']['url'] = f"{request.url_root}wtc"
 
     return render_template('index.html', **params)
 
@@ -106,14 +112,25 @@ def get_all_aircraft():
     return aircraft.aircraft_list
 
 
-# @app.route('/users/<username>')
-# def get_user(username):
-#     with open('static/users.json') as f:
-#         users = json.load(f)
-#         user = users.get(username)
-#         if user is None:
-#             return jsonify({'error': 'User not found'}), 404
-#         return jsonify(user)
+@app.route('/wtc', methods=['GET'])
+@return_json
+def get_wake_vortex_categories():
+    """
+    Returns JSON of a list of wake vortex categories.
+    """
+    wtc = WakeVortexCategories()
+    return wtc.categories
+
+
+@app.route('/wtc/<category>', methods=['GET'])
+@return_json
+def get_wake_vortex_category(category):
+    """
+    Returns JSON of a list of wake vortex categories.
+    """
+    wtc = WakeVortexCategories()
+    return wtc.get_category_dict(category)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8083", debug=True)
