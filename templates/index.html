@@ -23,13 +23,15 @@
         <li class="list_item">ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Registration: <span class="code_text">{{ nearest_aircraft['registration'] }}</span></li>
         <li class="list_item">Category: {{ nearest_aircraft['category'] }}</li>
-        <li class="list_item">Direction: {{ nearest_aircraft['direction'] }}</li>
         <li class="list_item">Distance: 
+            {{ nearest_aircraft['distance']['direction'] }}, 
+            <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
+            |
             <span class="code_text">
-                {% if nearest_aircraft['distance'] > 5 %}
-                    {{ nearest_aircraft['distance']|round(2) }} km
+                {% if nearest_aircraft['distance']['km'] > 2 %}
+                    {{ nearest_aircraft['distance']['km']|round(2) }} km
                 {% else %}
-                    {{ (nearest_aircraft['distance'] * 1000)|round|int }} m
+                    {{ (nearest_aircraft['distance']['m'])|round|int }} m
                 {% endif %}
             </span>
         </li>
