@@ -2,7 +2,7 @@
 
 {% block body %}
     {% block header %}
-        <h1>{% block title %}{{ system['title'] }}!{% endblock %}</h1>
+        <h1>{% block title %}{{ system['title'] }}{% endblock %}</h1>
     {% endblock %}
     <ul>
         <li class="list_item"><a href="{{ system['tar1090']['url'] }}">{{ system['tar1090']['label'] }}</a></li>
@@ -37,6 +37,8 @@
         </li>
         <li class="list_item">Altitude: <span class="code_text">{{ nearest_aircraft['alt_geom']}} ft</span></li>
         <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
+        <li class="list_item">Track: {{ nearest_aircraft['movement']['direction'] }}, 
+            <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
         <li class="list_item">FlightAware:
             <a href="{{ nearest_aircraft['flightaware']['live_url']}}">Live</a> |
             <a href="{{ nearest_aircraft['flightaware']['redirect_url']}}">Redirect</a>
