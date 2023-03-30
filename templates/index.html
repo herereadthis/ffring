@@ -12,17 +12,21 @@
     <h2>Closest Aircraft</h2>
     <ul>
         <li class="list_item">Flight: 
+            {% if nearest_aircraft['owner'] %}
+                {{ nearest_aircraft['owner'] }}
+            {% endif %}
             {% if nearest_aircraft['flight'] is none %}
                 unknown
             {% else %}
                 <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
             {% endif %}
         </li>
-        <li class="list_item">Owner: {{ nearest_aircraft['owner'] }}</li>
-        <li class="list_item">Aircraft: {{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}</li>
-        <li class="list_item">ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
+        <li class="list_item">Aircraft: {{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}
+            ({{ nearest_aircraft['category'] }})
+        </li>
         <li class="list_item">Registration: <span class="code_text">{{ nearest_aircraft['registration'] }}</span></li>
-        <li class="list_item">Category: {{ nearest_aircraft['category'] }}</li>
+        <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
+        <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
         <li class="list_item">Distance: 
             {{ nearest_aircraft['distance']['direction'] }}, 
             <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
@@ -37,13 +41,10 @@
         </li>
         <li class="list_item">Altitude: <span class="code_text">{{ nearest_aircraft['alt_geom']}} ft</span></li>
         <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
+        <li class="list_item">Vertical_rate: <span class="code_text">{{ nearest_aircraft['baro_rate'] }} ft/min</span></li>
         <li class="list_item">Track: {{ nearest_aircraft['movement']['direction'] }}, 
             <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
-        <li class="list_item">FlightAware:
-            <a href="{{ nearest_aircraft['flightaware']['live_url']}}">Live</a> |
-            <a href="{{ nearest_aircraft['flightaware']['redirect_url']}}">Redirect</a>
-        </li>
-        <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
+        <li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>
     </ul>
     {% if nearest_aircraft['image'] is defined and nearest_aircraft['image']|length  %}
         <img src="{{ nearest_aircraft['image']['src'] }}"/>
