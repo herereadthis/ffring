@@ -32,6 +32,10 @@ stuff = {
             'label': 'Ffring Aircraft',
             'url': 'aircraft'
         },
+        'ffring_aircraft_nearest': {
+            'label': 'Ffring Nearest Aircraft',
+            'url': 'aircraft/nearest'
+        },
         'ffring_wtc': {
             'label': 'Wake Vortex Categories',
             'url': 'wtc'
@@ -94,6 +98,7 @@ def get_index():
         'nearest_aircraft': session.get('nearest_aircraft')
     }
     params['system']['ffring_aircraft']['url'] = f"{request.url_root}aircraft"
+    params['system']['ffring_aircraft_nearest']['url'] = f"{request.url_root}aircraft/nearest"
     params['system']['ffring_wtc']['url'] = f"{request.url_root}wtc"
 
     return render_template('index.html', **params)
@@ -110,6 +115,31 @@ def get_all_aircraft():
     print(aircraft.aircraft_list)
 
     return aircraft.aircraft_list
+
+@app.route('/aircraft/nearest', methods=['GET'])
+@return_json
+def get_all_closes_aircraft():
+    """
+    Returns JSON of all aircraft messges, augmented with options.
+    """
+    receiver = Receiver(base_adsb_url)
+    aircraft = Aircraft(base_adsb_url, receiver.lat, receiver.lon)
+
+    icao_24 = aircraft.nearest_aircraft['icao_24']
+
+    session_icao = session.get('nearest_aircraft', {}).get('icao_24')
+    print(f"\nPrevious session icao is: {session_icao}")
+    print(f"Current nearest_aircraft_icao is: {icao_24}")
+
+    if (not session_icao or session_icao != icao_24):
+        print('Storing new aircraft into session...\n')
+        aircraft.retrieve_external_aircraft_options()
+    else:
+        print('Session shall continue with current aircraft...\n')
+        aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
+    session['nearest_aircraft'] = aircraft.nearest_aircraft
+
+    return session['nearest_aircraft']
 
 
 @app.route('/wtc', methods=['GET'])

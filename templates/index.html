@@ -21,12 +21,16 @@
                 <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
             {% endif %}
         </li>
-        <li class="list_item">Aircraft: {{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}
+        <li class="list_item">{{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}
             ({{ nearest_aircraft['category'] }})
         </li>
         <li class="list_item">Registration: <span class="code_text">{{ nearest_aircraft['registration'] }}</span></li>
         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
+        <li class="list_item">FlightAware:
+            <a href="{{ nearest_aircraft['flightaware']['live_url']}}">Live</a> |
+            <a href="{{ nearest_aircraft['flightaware']['redirect_url']}}">Redirect</a>
+        </li>
         <li class="list_item">Distance: 
             {{ nearest_aircraft['distance']['direction'] }}, 
             <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
@@ -73,6 +77,9 @@
     <ul>
         <li class="list_item">{{ system['ffring_aircraft']['label'] }}:
             <a href="{{ system['ffring_aircraft']['url'] }}">{{ system['ffring_aircraft']['url'] }}</a>
+        </li>
+        <li class="list_item">{{ system['ffring_aircraft_nearest']['label'] }}:
+            <a href="{{ system['ffring_aircraft_nearest']['url'] }}">{{ system['ffring_aircraft_nearest']['url'] }}</a>
         </li>
         <li class="list_item">{{ system['ffring_wtc']['label'] }}:
             <a href="{{ system['ffring_wtc']['url'] }}">{{ system['ffring_wtc']['url'] }}</a>
