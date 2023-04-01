@@ -11,20 +11,22 @@
     </ul>
     <h2>Closest Aircraft</h2>
     <ul>
-        <li class="list_item">Flight: 
-            {% if nearest_aircraft['owner'] %}
-                {{ nearest_aircraft['owner'] }}
-            {% endif %}
-            {% if nearest_aircraft['flight'] is none %}
-                unknown
-            {% else %}
-                <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
-            {% endif %}
-        </li>
-        <li class="list_item">{{ nearest_aircraft['manufacturer'] }} {{ nearest_aircraft['type'] }}
-            ({{ nearest_aircraft['category'] }})
-        </li>
-        <li class="list_item">Registration: <span class="code_text">{{ nearest_aircraft['registration'] }}</span></li>
+        {% with identity = nearest_aircraft['identity'] %}
+            <li class="list_item">Flight: 
+                {% if identity['owner'] %}
+                    {{ identity['owner'] }}
+                {% endif %}
+                {% if nearest_aircraft['flight'] is none %}
+                    unknown
+                {% else %}
+                    <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
+                {% endif %}
+            </li>
+            <li class="list_item">{{ identity['manufacturer'] }} {{ identity['type'] }}
+                ({{ nearest_aircraft['category'] }})
+            </li>
+            <li class="list_item">Registration: <span class="code_text">{{ identity['registration'] }}</span></li>
+        {% endwith %}
         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
         <li class="list_item">FlightAware:
@@ -50,11 +52,13 @@
             <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
         <li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>
     </ul>
-    {% if nearest_aircraft['image'] is defined and nearest_aircraft['image']|length  %}
-        <img src="{{ nearest_aircraft['image']['src'] }}"/>
-    {% else %}
-        <p><em>(No image found for aircraft)</em></p>
-    {% endif %}
+    {% with identity = nearest_aircraft['identity'] %}
+        {% if identity['image'] is defined and identity['image']|length  %}
+            <img src="{{ identity['image']['src'] }}"/>
+        {% else %}
+            <p><em>(No image found for aircraft)</em></p>
+        {% endif %}
+    {% endwith %}
     <h2>Weather</h2>
     <ul>
         <li class="list_item">Weather: {{ weather_report['shortForecast'] }}</li>
