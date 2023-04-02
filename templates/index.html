@@ -106,6 +106,14 @@
         <li class="list_item">Weather:
             <a href="{{ weather_report['forcast_hourly_url'] }}">{{ weather_report['forcast_hourly_url'] }}</a>
         </li>
+
+        {% if nearest_aircraft['image'] %}
+            <li class="list_item">Plainspotters:
+                <a href="{{ nearest_aircraft['image']['url'] }}">{{ nearest_aircraft['image']['url'] }}</a>
+            </li>
+        {% else %}
+            <li class="list_item">Plainspotters: <em>(no image found)</em></li>
+        {% endif %}
         <li class="list_item">HexDB: 
             <ul>
                 <li class="list_item">Aircraft
