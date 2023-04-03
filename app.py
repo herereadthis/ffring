@@ -8,6 +8,7 @@ import adsb_tools.weather
 # from pprint import pprint
 from flask import Flask, render_template, session, request
 from src.utils.flask_utils import return_json
+from src.utils.session_utils import get_config
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
@@ -52,6 +53,13 @@ stuff = {
 
 @app.route('/')
 def get_index():
+    config = get_config()
+
+    flightware_api_key = config.get('api_keys', {}).get('flightaware', '')
+    print('flightwaware_config')
+    print(flightware_api_key)
+    print('flightwaware_config')
+
     receiver = Receiver(base_adsb_url)
     base_lat = receiver.lat
     base_lon = receiver.lon

@@ -37,3 +37,6 @@ microblog.log*
 .vscode/
 
 .DS_Store
+
+# config toml
+config.toml
