@@ -11,23 +11,25 @@ from src.utils.flask_utils import return_json
 from src.utils.session_utils import get_config
 
 app = Flask(__name__)
-app.secret_key = str(uuid.uuid4())
+# app.secret_key = str(uuid.uuid4())
+# static secret key shall persist session in debug mode
+app.secret_key = 'a06b65f7-361f-45b1-a205-8127606f8bb1'
 
-base_adsb_url = 'http://adsb.local:8080'
+BASE_ADSB_URL = 'http://adsb.local:8080'
 
 stuff = {
     'system': {
         'tar1090': {
             'label': 'Tar1090',
-            'url': f'{base_adsb_url}/tar1090'
+            'url': f'{BASE_ADSB_URL}/tar1090'
         },
         'graphs1090': {
             'label': 'Graphs1090',
-            'url': f'{base_adsb_url}/graphs1090'
+            'url': f'{BASE_ADSB_URL}/graphs1090'
         },
         'piaware': {
             'label': 'PiAware',
-            'url': f'{base_adsb_url}'
+            'url': f'{BASE_ADSB_URL}'
         },
         'ffring_aircraft': {
             'label': 'Ffring Aircraft',
@@ -42,9 +44,9 @@ stuff = {
             'url': 'wtc'
         },
         'urls': {
-            'aircraft': f'{base_adsb_url}/data/aircraft.json',
-            'stats': f'{base_adsb_url}/data/stats.json',
-            'receiver': f'{base_adsb_url}/data/receiver.json'
+            'aircraft': f'{BASE_ADSB_URL}/data/aircraft.json',
+            'stats': f'{BASE_ADSB_URL}/data/stats.json',
+            'receiver': f'{BASE_ADSB_URL}/data/receiver.json'
         },
         'title': 'FFring'
     }
@@ -57,7 +59,7 @@ def get_index():
 
     flightware_api_key = config.get('api_keys', {}).get('flightaware', '')
 
-    receiver = Receiver(base_adsb_url)
+    receiver = Receiver(BASE_ADSB_URL)
     base_lat = receiver.lat
     base_lon = receiver.lon
 
@@ -80,7 +82,7 @@ def get_index():
         session.get('forcast_hourly_url'), session.get('weather_timezone_name')
     )
 
-    aircraft = Aircraft(base_adsb_url, base_lat, base_lon, flightware_api_key)
+    aircraft = Aircraft(BASE_ADSB_URL, base_lat, base_lon, flightware_api_key)
     icao_24 = aircraft.nearest_aircraft['icao_24']
 
     session_icao = session.get('nearest_aircraft', {}).get('icao_24')
@@ -116,8 +118,8 @@ def get_all_aircraft():
     """
     Returns JSON of all aircraft messges, augmented with options.
     """
-    receiver = Receiver(base_adsb_url)
-    aircraft = Aircraft(base_adsb_url, receiver.lat, receiver.lon)
+    receiver = Receiver(BASE_ADSB_URL)
+    aircraft = Aircraft(BASE_ADSB_URL, receiver.lat, receiver.lon)
     print(aircraft.aircraft_list)
 
     return aircraft.aircraft_list
@@ -131,8 +133,8 @@ def get_all_closes_aircraft():
     config = get_config()
     flightware_api_key = config.get('api_keys', {}).get('flightaware', '')
 
-    receiver = Receiver(base_adsb_url)
-    aircraft = Aircraft(base_adsb_url, receiver.lat, receiver.lon, flightware_api_key)
+    receiver = Receiver(BASE_ADSB_URL)
+    aircraft = Aircraft(BASE_ADSB_URL, receiver.lat, receiver.lon, flightware_api_key)
 
     icao_24 = aircraft.nearest_aircraft['icao_24']
 
@@ -175,7 +177,7 @@ def get_wake_vortex_category(category):
 @app.route('/weather/base', methods=['GET'])
 @return_json
 def get_weather():
-    receiver = Receiver(base_adsb_url)
+    receiver = Receiver(BASE_ADSB_URL)
     base_lat = receiver.lat
     base_lon = receiver.lon
 
