@@ -1,4 +1,4 @@
 flask==2.2.3
 requests==2.28.2
-adsb_tools==0.1.40
+adsb_tools==0.1.41
 toml==0.10.2

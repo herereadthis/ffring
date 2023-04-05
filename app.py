@@ -90,6 +90,7 @@ def get_index():
     if (not session_icao or session_icao != icao_24):
         print('Storing new aircraft into session...\n')
         aircraft.retrieve_external_aircraft_options()
+        aircraft.get_flightaware_ident()
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
@@ -127,8 +128,11 @@ def get_all_closes_aircraft():
     """
     Returns JSON of all aircraft messges, augmented with options.
     """
+    config = get_config()
+    flightware_api_key = config.get('api_keys', {}).get('flightaware', '')
+
     receiver = Receiver(base_adsb_url)
-    aircraft = Aircraft(base_adsb_url, receiver.lat, receiver.lon)
+    aircraft = Aircraft(base_adsb_url, receiver.lat, receiver.lon, flightware_api_key)
 
     icao_24 = aircraft.nearest_aircraft['icao_24']
 
@@ -139,6 +143,7 @@ def get_all_closes_aircraft():
     if (not session_icao or session_icao != icao_24):
         print('Storing new aircraft into session...\n')
         aircraft.retrieve_external_aircraft_options()
+        aircraft.get_flightaware_ident()
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
