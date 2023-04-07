@@ -92,7 +92,8 @@ def get_index():
     if (not session_icao or session_icao != icao_24):
         print('Storing new aircraft into session...\n')
         aircraft.retrieve_external_aircraft_options()
-        aircraft.get_flightaware_ident()
+        flightaware = aircraft.set_flightaware_ident()
+        print(flightaware)
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
@@ -145,7 +146,8 @@ def get_all_closes_aircraft():
     if (not session_icao or session_icao != icao_24):
         print('Storing new aircraft into session...\n')
         aircraft.retrieve_external_aircraft_options()
-        aircraft.get_flightaware_ident()
+        flightaware = aircraft.set_flightaware_ident()
+        print(flightaware)
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))

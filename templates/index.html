@@ -25,6 +25,24 @@
             <li class="list_item">{{ identity['manufacturer'] }} {{ identity['type'] }}
                 ({{ nearest_aircraft['category'] }})
             </li>
+        {% endwith %}
+        {% with flightaware = nearest_aircraft['flightaware'] %}
+            {% if flightaware is defined and flightaware|length  %}
+                {% if flightaware['origin'] is defined and flightaware['origin']|length  %}
+                   <li class="list_item">Origin: 
+                        <span class="code_text">{{ flightaware['origin']['code_iata'] }}</span> |
+                        {{ flightaware['origin']['name'] }}
+                    </li>
+                {% endif %}
+                {% if flightaware['destination'] is defined and flightaware['destination']|length  %}
+                   <li class="list_item">Destination: 
+                        <span class="code_text">{{ flightaware['destination']['code_iata'] }}</span> |
+                        {{ flightaware['destination']['name'] }}
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endwith %}
+        {% with identity = nearest_aircraft['identity'] %}
             <li class="list_item">Registration: <span class="code_text">{{ identity['registration'] }}</span></li>
         {% endwith %}
         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
