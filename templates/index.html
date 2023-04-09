@@ -40,6 +40,12 @@
                         {{ flightaware['destination']['name'] }}
                     </li>
                 {% endif %}
+                <li class="list_item">Scheduled Gate Departure: {{ flightaware['scheduled_out']}}</li>
+                <li class="list_item">Actual Gate Departure: {{ flightaware['actual_out']}}</li>
+                <li class="list_item">Scheduled Takeoff: {{ flightaware['scheduled_off']}}</li>
+                <li class="list_item">Actual Takeoff: {{ flightaware['actual_off']}}</li>
+                <li class="list_item">Scheduled Arrival: {{ flightaware['scheduled_in']}}</li>
+                <li class="list_item">Estimated Arrival: {{ flightaware['estimated_in']}}</li>
             {% endif %}
         {% endwith %}
         {% with identity = nearest_aircraft['identity'] %}
@@ -48,8 +54,8 @@
         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
         <li class="list_item">FlightAware:
-            <a href="{{ nearest_aircraft['flightaware']['live_url']}}">Live</a> |
-            <a href="{{ nearest_aircraft['flightaware']['redirect_url']}}">Redirect</a>
+            <a href="{{ nearest_aircraft['flightaware_urls']['live']}}">Live</a> |
+            <a href="{{ nearest_aircraft['flightaware_urls']['redirect']}}">Redirect</a>
         </li>
         <li class="list_item">Distance: 
             {{ nearest_aircraft['distance']['direction'] }}, 
