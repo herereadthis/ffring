@@ -28,18 +28,26 @@
         {% endwith %}
         {% with flightaware = nearest_aircraft['flightaware'] %}
             {% if flightaware is defined and flightaware|length  %}
-                {% if flightaware['origin'] is defined and flightaware['origin']|length  %}
-                   <li class="list_item">Origin: 
-                        <span class="code_text">{{ flightaware['origin']['code_iata'] }}</span> |
-                        {{ flightaware['origin']['name'] }}
-                    </li>
-                {% endif %}
-                {% if flightaware['destination'] is defined and flightaware['destination']|length  %}
-                   <li class="list_item">Destination: 
-                        <span class="code_text">{{ flightaware['destination']['code_iata'] }}</span> |
-                        {{ flightaware['destination']['name'] }}
-                    </li>
-                {% endif %}
+                {% with origin = flightaware['origin'] %}
+                    {% if origin is defined and origin is not none  %}
+                        <li class="list_item">Origin: 
+                            <span class="code_text">{{ origin['code_iata'] }}</span> |
+                            {{ origin['name'] }}
+                        </li>
+                    {% else %}
+                    <li class="list_item">Origin: unknown</li>
+                    {% endif %}
+                {% endwith %}
+                {% with destination = flightaware['destination'] %}
+                    {% if destination is defined and destination is not none  %}
+                        <li class="list_item">Destination: 
+                            <span class="code_text">{{ destination['code_iata'] }}</span> |
+                            {{ destination['name'] }}
+                        </li>
+                    {% else %}
+                    <li class="list_item">Destination: unknown</li>
+                    {% endif %}
+                {% endwith %}
                 <li class="list_item">Scheduled Gate Departure: {{ flightaware['scheduled_out']}}</li>
                 <li class="list_item">Actual Gate Departure: {{ flightaware['actual_out']}}</li>
                 <li class="list_item">Scheduled Takeoff: {{ flightaware['scheduled_off']}}</li>
