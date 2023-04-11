@@ -1,12 +1,14 @@
-import uuid
+# import uuid
+from jinja2 import Environment, FileSystemLoader
 import adsb_tools.timezone
 import adsb_tools.receiver
 from adsb_tools.aircraft import Aircraft
 from adsb_tools.receiver import Receiver
 from adsb_tools.wake_vortex import WakeVortexCategories
+from adsb_tools.utils import dt_utils
 import adsb_tools.weather
 # from pprint import pprint
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session, request, url_for
 from src.utils.flask_utils import return_json
 from src.utils.session_utils import get_config
 
@@ -51,6 +53,13 @@ stuff = {
         'title': 'FFring'
     }
 }
+
+env = Environment(loader=FileSystemLoader('templates'))
+env.filters['format_datetime'] = dt_utils.format_datetime
+
+def add_flask_built_ins(context):
+    context['url_for'] = url_for
+    return context
 
 
 @app.route('/')
@@ -109,8 +118,11 @@ def get_index():
     params['system']['ffring_aircraft']['url'] = f"{request.url_root}aircraft"
     params['system']['ffring_aircraft_nearest']['url'] = f"{request.url_root}aircraft/nearest"
     params['system']['ffring_wtc']['url'] = f"{request.url_root}wtc"
+    add_flask_built_ins(params)
 
-    return render_template('index.html', **params)
+    template = env.get_template('index.html')
+    output = template.render(**params)
+    return output
 
 
 @app.route('/aircraft', methods=['GET'])

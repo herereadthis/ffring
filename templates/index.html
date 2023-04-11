@@ -48,12 +48,12 @@
                     <li class="list_item">Destination: unknown</li>
                     {% endif %}
                 {% endwith %}
-                <li class="list_item">Scheduled Gate Departure: {{ flightaware['scheduled_out']}}</li>
-                <li class="list_item">Actual Gate Departure: {{ flightaware['actual_out']}}</li>
-                <li class="list_item">Scheduled Takeoff: {{ flightaware['scheduled_off']}}</li>
-                <li class="list_item">Actual Takeoff: {{ flightaware['actual_off']}}</li>
-                <li class="list_item">Scheduled Arrival: {{ flightaware['scheduled_in']}}</li>
-                <li class="list_item">Estimated Arrival: {{ flightaware['estimated_in']}}</li>
+                <li class="list_item">Scheduled Gate Departure: {{ flightaware['scheduled_out']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Actual Gate Departure: {{ flightaware['actual_out']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Scheduled Takeoff: {{ flightaware['scheduled_off']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Actual Takeoff: {{ flightaware['actual_off']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Scheduled Arrival: {{ flightaware['scheduled_in']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Estimated Arrival: {{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</li>
             {% endif %}
         {% endwith %}
         {% with identity = nearest_aircraft['identity'] %}
