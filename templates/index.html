@@ -54,6 +54,8 @@
                 <li class="list_item">Actual Takeoff: {{ flightaware['actual_off']|format_datetime(local_timezone_name)}}</li>
                 <li class="list_item">Scheduled Arrival: {{ flightaware['scheduled_in']|format_datetime(local_timezone_name)}}</li>
                 <li class="list_item">Estimated Arrival: {{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Arrival diff: {{ flightaware['time_diff_minutes'] }} minutes</li>
+                <
             {% endif %}
         {% endwith %}
         {% with identity = nearest_aircraft['identity'] %}

@@ -15,7 +15,7 @@ from src.utils.session_utils import get_config
 app = Flask(__name__)
 # app.secret_key = str(uuid.uuid4())
 # static secret key shall persist session in debug mode
-app.secret_key = 'a06b65f7-361f-45b1-a205-8127606f8bb1'
+app.secret_key = 'a06b65f7-361f-45b1-a205-8127606f8bb2'
 
 BASE_ADSB_URL = 'http://adsb.local:8080'
 
