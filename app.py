@@ -15,7 +15,7 @@ from src.utils.session_utils import get_config
 app = Flask(__name__)
 # app.secret_key = str(uuid.uuid4())
 # static secret key shall persist session in debug mode
-app.secret_key = 'a06b65f7-361f-45b1-a205-8127606f8bb2'
+app.secret_key = '53d1e164-9dff-4aa4-912d-ad00903862d4'
 
 BASE_ADSB_URL = 'http://adsb.local:8080'
 
@@ -102,7 +102,6 @@ def get_index():
         print('Storing new aircraft into session...\n')
         aircraft.retrieve_external_aircraft_options()
         flightaware = aircraft.set_flightaware_ident()
-        print(flightaware)
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
@@ -159,7 +158,6 @@ def get_all_closes_aircraft():
         print('Storing new aircraft into session...\n')
         aircraft.retrieve_external_aircraft_options()
         flightaware = aircraft.set_flightaware_ident()
-        print(flightaware)
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
