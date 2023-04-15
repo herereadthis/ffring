@@ -54,6 +54,7 @@
                 <li class="list_item">Actual Takeoff: {{ flightaware['actual_off']|format_datetime(local_timezone_name)}}</li>
                 <li class="list_item">Scheduled Arrival: {{ flightaware['scheduled_in']|format_datetime(local_timezone_name)}}</li>
                 <li class="list_item">Estimated Arrival: {{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</li>
+                <li class="list_item">Departure diff: {{ flightaware['diff_departure_minutes'] }} minutes</li>
                 <li class="list_item">Arrival diff: {{ flightaware['diff_arrival_minutes'] }} minutes</li>
                 <
             {% endif %}
