@@ -1,0 +1,35 @@
+.flightinfo {
+}
+
+.flightinfo_timeline {
+    width: 54rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+
+
+
+.flightinfo_timeline_origin {
+    text-align: left;
+}
+
+.flightinfo_timeline_progress {
+    height: 1rem;
+    background-color: #DDD;
+    width: 100%;
+}
+
+.flightinfo_timeline_destination {
+    text-align: right;
+}
+
+
+
+.flightinfo_airport {
+    width: 7.2rem;
+    font-size: 2.4rem;
+    line-height: 3.6rem;
+}

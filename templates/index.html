@@ -48,6 +48,29 @@
                     <li class="list_item">Destination: unknown</li>
                     {% endif %}
                 {% endwith %}
+                <div class="flightinfo">
+                    <div class="flightinfo_timeline">
+                        <div class="flightinfo_timeline_origin flightinfo_airport">
+                            {% with origin = flightaware['origin'] %}
+                                {% if origin is defined and origin is not none  %}
+                                    {{ origin['code_iata'] }}
+                                {% else %}
+                                    <li class="list_item">unknown</li>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="flightinfo_timeline_progress"></div>
+                        <div class="flightinfo_timeline_destination flightinfo_airport">
+                            {% with destination = flightaware['destination'] %}
+                                {% if destination is defined and destination is not none  %}
+                                    {{ destination['code_iata'] }}
+                                {% else %}
+                                    <li class="list_item">unknown</li>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
                 <li class="list_item">Gate Departure
                     <ul>
                         <li class="list_item">Scheduled: {{ flightaware['scheduled_out']|format_datetime(local_timezone_name)}}</li>
