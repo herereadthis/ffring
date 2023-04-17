@@ -49,7 +49,7 @@
                     {% endif %}
                 {% endwith %}
                 <div class="flightinfo">
-                    <div class="flightinfo_timeline">
+                    <div class="flightinfo_timeline_container">
                         <div class="flightinfo_timeline_origin flightinfo_airport">
                             {% with origin = flightaware['origin'] %}
                                 {% if origin is defined and origin is not none  %}
@@ -68,6 +68,21 @@
                                     <li class="list_item">unknown</li>
                                 {% endif %}
                             {% endwith %}
+                        </div>
+                    </div>
+                    <div class="flightinfo_intinerary_container">
+                        <div class="flightinfo_itinerary_origin flightinfo_itinenary">
+                            <div>
+                                <span>Departure</span>
+                                <span>{{ flightaware['actual_out']|format_datetime(local_timezone_name)}}</span>
+                            </div>
+                        </div>
+                        <div class="flightinfo_itinerary_destination flightinfo_itinenary">
+                            <div>
+                                <span>Arrival</span>
+                                <span>{{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</span>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,14 @@
 .flightinfo {
+    width: 54rem;
 }
 
-.flightinfo_timeline {
-    width: 54rem;
+.flightinfo_timeline_container {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
+    align-items: center;
 }
 
 
@@ -26,10 +28,22 @@
     text-align: right;
 }
 
-
-
 .flightinfo_airport {
     width: 7.2rem;
     font-size: 2.4rem;
     line-height: 3.6rem;
+}
+
+.flightinfo_intinerary_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+
+.flightinfo_itinenary {
+    width: 100%;
+    flex-grow: 1;
 }
