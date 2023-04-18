@@ -30,20 +30,14 @@
             {% if flightaware is defined and flightaware|length  %}
                 {% with origin = flightaware['origin'] %}
                     {% if origin is defined and origin is not none  %}
-                        <li class="list_item">Origin: 
-                            <span class="code_text">{{ origin['code_iata'] }}</span> |
-                            {{ origin['name'] }}
-                        </li>
+                        <li class="list_item">Origin: {{ origin['name'] }}</li>
                     {% else %}
                     <li class="list_item">Origin: unknown</li>
                     {% endif %}
                 {% endwith %}
                 {% with destination = flightaware['destination'] %}
                     {% if destination is defined and destination is not none  %}
-                        <li class="list_item">Destination: 
-                            <span class="code_text">{{ destination['code_iata'] }}</span> |
-                            {{ destination['name'] }}
-                        </li>
+                        <li class="list_item">Destination: {{ destination['name'] }}</li>
                     {% else %}
                     <li class="list_item">Destination: unknown</li>
                     {% endif %}
@@ -72,46 +66,51 @@
                     </div>
                     <div class="flightinfo_intinerary_container">
                         <div class="flightinfo_itinerary_origin flightinfo_itinenary">
-                            <div>
-                                <span>Departure</span>
-                                <span>{{ flightaware['actual_out']|format_datetime(local_timezone_name)}}</span>
+                            <div class="flightinfo_time_pair">
+                                <div><span>Gate Departure:</span></div>
+                                <div>{{ flightaware['actual_out']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div></div>
+                                <div>{{ flightaware['scheduled_out']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div><span>Takeoff:</span></div>
+                                <div>{{ flightaware['actual_off']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div></div>
+                                <div>{{ flightaware['scheduled_off']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div><span>Schedule:</span></div>
+                                <div>{{ flightaware['diff_departure_minutes'] }} minutes</div>
                             </div>
                         </div>
                         <div class="flightinfo_itinerary_destination flightinfo_itinenary">
-                            <div>
-                                <span>Arrival</span>
-                                <span>{{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</span>
+                            <div class="flightinfo_time_pair">
+                                <div><span>Gate Arrival:</span></div>
+                                <div>{{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</div>
                             </div>
-
+                            <div class="flightinfo_time_pair">
+                                <div></div>
+                                <div>{{ flightaware['scheduled_in']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div><span>Landing:</span></div>
+                                <div>{{ flightaware['estimated_on']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div></div>
+                                <div>{{ flightaware['scheduled_on']|format_datetime(local_timezone_name)}}</div>
+                            </div>
+                            <div class="flightinfo_time_pair">
+                                <div><span>Schedule:</span></div>
+                                <div>{{ flightaware['diff_arrival_minutes'] }} minutes</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <li class="list_item">Gate Departure
-                    <ul>
-                        <li class="list_item">Scheduled: {{ flightaware['scheduled_out']|format_datetime(local_timezone_name)}}</li>
-                        <li class="list_item">Actual: {{ flightaware['actual_out']|format_datetime(local_timezone_name)}}</li>
-                    </ul>
-                </li>
-                <li class="list_item">Takeoff
-                    <ul>
-                        <li class="list_item">Scheduled: {{ flightaware['scheduled_off']|format_datetime(local_timezone_name)}}</li>
-                        <li class="list_item">Actual: {{ flightaware['actual_off']|format_datetime(local_timezone_name)}}</li>
-                    </ul>
-                </li>
-                <li class="list_item">Landing
-                    <ul>
-                        <li class="list_item">Scheduled: {{ flightaware['scheduled_on']|format_datetime(local_timezone_name)}}</li>
-                        <li class="list_item">Estimated: {{ flightaware['estimated_off']|format_datetime(local_timezone_name)}}</li>
-                    </ul>
-                </li>
-                <li class="list_item">Gate Arrival
-                    <ul>
-                        <li class="list_item">Scheduled: {{ flightaware['scheduled_in']|format_datetime(local_timezone_name)}}</li>
-                        <li class="list_item">Estimated: {{ flightaware['estimated_in']|format_datetime(local_timezone_name)}}</li>
-                    </ul>
-                </li>
-                <li class="list_item">Departure diff: {{ flightaware['diff_departure_minutes'] }} minutes</li>
-                <li class="list_item">Arrival diff: {{ flightaware['diff_arrival_minutes'] }} minutes</li>
             {% endif %}
         {% endwith %}
         {% with identity = nearest_aircraft['identity'] %}
