@@ -84,7 +84,7 @@
                             </div>
                             <div class="flightinfo_time_pair">
                                 <div><span>Schedule:</span></div>
-                                <div>{{ flightaware['diff_departure_minutes'] }} minutes</div>
+                                {{ flightaware['diff_departure_minutes']|render_schedule_diff }}
                             </div>
                         </div>
                         <div class="flightinfo_itinerary_destination flightinfo_itinenary">
@@ -106,7 +106,7 @@
                             </div>
                             <div class="flightinfo_time_pair">
                                 <div><span>Schedule:</span></div>
-                                <div>{{ flightaware['diff_arrival_minutes'] }} minutes</div>
+                                {{ flightaware['diff_arrival_minutes']|render_schedule_diff }}
                             </div>
                         </div>
                     </div>

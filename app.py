@@ -54,8 +54,19 @@ stuff = {
     }
 }
 
+
+def render_schedule_diff(value):
+    result = ''
+    if value < 0:
+        result = f'<div class="schedule_early">{abs(value)} minutes early</div>'
+    else:
+        result = f'<div class="schedule_delayed">{value} minutes delayed</div>'
+    return result
+
+
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['format_datetime'] = dt_utils.format_datetime
+env.filters['render_schedule_diff'] = render_schedule_diff
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for

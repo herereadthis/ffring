@@ -76,3 +76,11 @@
     width: 60%;
 }
 
+.schedule_early {
+    color: #090;
+}
+
+.schedule_delayed {
+    color: #C00;
+}
+
