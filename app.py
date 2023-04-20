@@ -63,10 +63,29 @@ def render_schedule_diff(value):
         result = f'<div class="schedule_delayed">{value} minutes delayed</div>'
     return result
 
+def render_time_pairs(label, estimated_time, scheduled_time, local_tz):
+    formatted_scheduled = dt_utils.format_datetime(scheduled_time, local_tz)
+    formatted_estimated = dt_utils.format_datetime(estimated_time, local_tz)
+
+    return f'''
+        <div>
+            <div class="flightinfo_time_pair">
+                <div><span>{label}:</span></div>
+                <div>{formatted_scheduled}</div>
+            </div>
+            <div class="flightinfo_time_pair">
+                <div></div>
+                <div>{formatted_estimated}</div>
+            </div>
+        </div>
+    '''
+
+
 
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['format_datetime'] = dt_utils.format_datetime
 env.filters['render_schedule_diff'] = render_schedule_diff
+env.filters['render_time_pairs'] = render_time_pairs
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for
