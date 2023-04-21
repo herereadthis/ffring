@@ -11,8 +11,28 @@
     align-items: center;
 }
 
+.flightinfo_airports_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.flightinfo_airports_container div {
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+}
 
+.flightinfo_airports_container .origin {
+    text-align: left;
+
+}
+
+.flightinfo_airports_container .destination {
+    text-align: right;
+}
 
 .flightinfo_timeline_origin {
     text-align: left;
