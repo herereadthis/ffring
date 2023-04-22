@@ -26,50 +26,10 @@
                 ({{ nearest_aircraft['category'] }})
             </li>
         {% endwith %}
+        {{ nearest_aircraft['flightaware']|render_flightaware }}
         {% with flightaware = nearest_aircraft['flightaware'] %}
             {% if flightaware is defined and flightaware|length %}
                 <div class="flightinfo">
-                    <div class="flightinfo_timeline_container">
-                        <div class="flightinfo_timeline_origin flightinfo_airport">
-                            {% with origin = flightaware['origin'] %}
-                                {% if origin is defined and origin is not none  %}
-                                    {{ origin['code_iata'] }}
-                                {% else %}
-                                    unknown
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                        <div class="flightinfo_timeline_progress"></div>
-                        <div class="flightinfo_timeline_destination flightinfo_airport">
-                            {% with destination = flightaware['destination'] %}
-                                {% if destination is defined and destination is not none  %}
-                                    {{ destination['code_iata'] }}
-                                {% else %}
-                                    unknown
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                    </div>
-                    <div class="flightinfo_airports_container">
-                        <div class="origin">
-                            {% with origin = flightaware['origin'] %}
-                                {% if origin is defined and origin is not none  %}
-                                    {{ origin['name'] }}
-                                {% else %}
-                                    unknown
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                        <div class="destination">
-                            {% with destination = flightaware['destination'] %}
-                                {% if destination is defined and destination is not none  %}
-                                    {{ destination['name'] }}
-                                {% else %}
-                                    unknown
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                    </div>
                     <div class="flightinfo_intinerary_container">
                         <div class="flightinfo_itinerary_origin flightinfo_itinenary">
                             {{ 'Gate Departure'|render_time_pairs(flightaware['actual_out'], flightaware['scheduled_out'], local_timezone_name) }}

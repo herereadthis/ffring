@@ -1,0 +1,21 @@
+
+<div class="flightinfo">
+    <div class="flightinfo_timeline_container">
+        <div class="flightinfo_timeline_origin flightinfo_airport">
+            {{ origin|render_or_unknown('code_iata') }}
+        </div>
+        <div class="flightinfo_timeline_progress"></div>
+        <div class="flightinfo_timeline_destination flightinfo_airport">
+            {{ destination|render_or_unknown('code_iata') }}
+        </div>
+    </div>
+
+    <div class="flightinfo_airports_container">
+        <div class="origin">
+            {{ origin|render_or_unknown('name') }}
+        </div>
+        <div class="destination">
+            {{ destination|render_or_unknown('name') }}
+        </div>
+    </div>
+</div>

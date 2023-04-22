@@ -80,12 +80,31 @@ def render_time_pairs(label, estimated_time, scheduled_time, local_tz):
         </div>
     '''
 
+def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
+    result = unknown
+    if dict_to_check is None or len(dict_to_check) == 0:
+        result = unknown
+    elif dict_to_check[key] is None or len(dict_to_check[key]) == 0:
+        result = unknown
+    else:
+        result = dict_to_check[key]
+    return result
+
+def render_flightaware(flightaware):
+    if flightaware is None or len(flightaware) == 0:
+        return '<div/>'
+    else:
+        template = env.get_template('flightaware.html')
+        output = template.render(**flightaware)
+        return output
 
 
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['format_datetime'] = dt_utils.format_datetime
 env.filters['render_schedule_diff'] = render_schedule_diff
 env.filters['render_time_pairs'] = render_time_pairs
+env.filters['render_or_unknown'] = render_or_unknown
+env.filters['render_flightaware'] = render_flightaware
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for
