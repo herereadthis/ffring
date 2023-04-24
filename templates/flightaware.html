@@ -32,6 +32,13 @@
         <div class="flightinfo_itinenary destination">
             <p class="short_date">{{ estimated_in|format_date_short(local_timezone_name) }}</p>
             <p>Gate Arrival</p>
+            <div class="time_pair">
+                <p class="estimated {{ estimated_in|get_time_diff_class(scheduled_in) }}">
+                    {{ estimated_in|format_time_short(destination['timezone']) }}
+                    {{ estimated_in|format_tz(destination['timezone']) }}
+                </p>
+                <p class="scheduled">{{ scheduled_in|format_time_short(destination['timezone']) }}</p>
+            </div>
         </div>
     </div>
 </div>
