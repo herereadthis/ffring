@@ -1,5 +1,13 @@
 
 <div class="flightinfo">
+    <div class="flightinfo_airports_container">
+        <div class="origin">
+            {{ origin|render_or_unknown('name') }}
+        </div>
+        <div class="destination">
+            {{ destination|render_or_unknown('name') }}
+        </div>
+    </div>
     <div class="flightinfo_timeline_container">
         <div class="flightinfo_timeline_origin flightinfo_airport">
             {{ origin|render_or_unknown('code_iata') }}
@@ -9,13 +17,21 @@
             {{ destination|render_or_unknown('code_iata') }}
         </div>
     </div>
-
-    <div class="flightinfo_airports_container">
-        <div class="origin">
-            {{ origin|render_or_unknown('name') }}
+    <div class="flightinfo_intinerary_container">
+        <div class="flightinfo_itinenary origin">
+            <p class="short_date">{{ actual_out|format_date_short(local_timezone_name) }}</p>
+            <p>Gate Departure</p>
+            <div class="time_pair">
+                <p class="estimated {{ actual_out|get_time_diff_class(scheduled_out) }}">
+                    {{ actual_out|format_time_short(origin['timezone']) }}
+                    {{ actual_out|format_tz(origin['timezone']) }}
+                </p>
+                <p class="scheduled">{{ scheduled_out|format_time_short(origin['timezone']) }}</p>
+            </div>
         </div>
-        <div class="destination">
-            {{ destination|render_or_unknown('name') }}
+        <div class="flightinfo_itinenary destination">
+            <p class="short_date">{{ estimated_in|format_date_short(local_timezone_name) }}</p>
+            <p>Gate Arrival</p>
         </div>
     </div>
 </div>

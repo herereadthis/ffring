@@ -68,6 +68,44 @@
     flex-grow: 1;
 }
 
+.flightinfo_itinenary.origin {
+    margin-right: 1.2rem;
+}
+
+.flightinfo_itinenary.destination {
+    margin-left: 1.2rem;
+}
+
+.short_date {
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+}
+
+.time_pair {
+    display: flex;
+}
+
+.time_pair .estimated {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+}
+
+.estimated.early {
+    color: #090;
+}
+
+.estimated.delayed {
+    color: #900
+}
+
+.time_pair .scheduled {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 1.2rem;
+}
+
 .flightinfo_time_pair {
     width: 100%;
     display: flex;

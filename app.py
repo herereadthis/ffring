@@ -16,6 +16,7 @@ app = Flask(__name__)
 # app.secret_key = str(uuid.uuid4())
 # static secret key shall persist session in debug mode
 app.secret_key = '53d1e164-9dff-4aa4-912d-ad00903862d4'
+# app.secret_key = str(uuid.uuid4())
 
 BASE_ADSB_URL = 'http://adsb.local:8080'
 
@@ -56,6 +57,7 @@ stuff = {
 
 
 def render_schedule_diff(value):
+    print(f'schedule_diff: {value}')
     result = ''
     if value < 0:
         result = f'<div class="schedule_early">{abs(value)} minutes early</div>'
@@ -71,11 +73,11 @@ def render_time_pairs(label, estimated_time, scheduled_time, local_tz):
         <div>
             <div class="flightinfo_time_pair">
                 <div><span>{label}:</span></div>
-                <div>{formatted_scheduled}</div>
+                <div>{formatted_estimated}</div>
             </div>
             <div class="flightinfo_time_pair">
                 <div></div>
-                <div>{formatted_estimated}</div>
+                <div>{formatted_scheduled}</div>
             </div>
         </div>
     '''
@@ -90,21 +92,37 @@ def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
         result = dict_to_check[key]
     return result
 
-def render_flightaware(flightaware):
+def render_flightaware(flightaware, local_timezone_name):
     if flightaware is None or len(flightaware) == 0:
         return '<div/>'
     else:
         template = env.get_template('flightaware.html')
+        flightaware['local_timezone_name'] = local_timezone_name
         output = template.render(**flightaware)
         return output
 
+def get_time_diff_class(actual_time, scheduled_time):
+    td_class = 'equal'
+    if (actual_time is not None and scheduled_time is not None):
+        time_diff = dt_utils.compare_datetimes(actual_time, scheduled_time)
+        if time_diff == -1:
+            td_class = 'early'
+        elif time_diff == 1:
+            td_class = 'delayed'
+    
+    return td_class
+        
 
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['format_datetime'] = dt_utils.format_datetime
+env.filters['format_date_short'] = dt_utils.format_date_short
+env.filters['format_time_short'] = dt_utils.format_time_short
+env.filters['format_tz'] = dt_utils.format_tz
 env.filters['render_schedule_diff'] = render_schedule_diff
 env.filters['render_time_pairs'] = render_time_pairs
 env.filters['render_or_unknown'] = render_or_unknown
 env.filters['render_flightaware'] = render_flightaware
+env.filters['get_time_diff_class'] = get_time_diff_class
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for

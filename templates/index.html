@@ -26,7 +26,7 @@
                 ({{ nearest_aircraft['category'] }})
             </li>
         {% endwith %}
-        {{ nearest_aircraft['flightaware']|render_flightaware }}
+        {{ nearest_aircraft['flightaware']|render_flightaware(local_timezone_name) }}
         {% with flightaware = nearest_aircraft['flightaware'] %}
             {% if flightaware is defined and flightaware|length %}
                 <div class="flightinfo">
