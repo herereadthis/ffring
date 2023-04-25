@@ -65,30 +65,15 @@ def render_schedule_diff(value):
         result = f'<div class="schedule_delayed">{value} minutes delayed</div>'
     return result
 
-def render_time_pairs(label, estimated_time, scheduled_time, local_tz):
-    formatted_scheduled = dt_utils.format_datetime(scheduled_time, local_tz)
-    formatted_estimated = dt_utils.format_datetime(estimated_time, local_tz)
-
-    return f'''
-        <div>
-            <div class="flightinfo_time_pair">
-                <div><span>{label}:</span></div>
-                <div>{formatted_estimated}</div>
-            </div>
-            <div class="flightinfo_time_pair">
-                <div></div>
-                <div>{formatted_scheduled}</div>
-            </div>
-        </div>
-    '''
-
 def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
     result = unknown
     if dict_to_check is None or len(dict_to_check) == 0:
         result = unknown
-    elif dict_to_check[key] is None or len(dict_to_check[key]) == 0:
+    elif key not in dict_to_check or dict_to_check[key] is None or len(dict_to_check[key]) == 0:
         result = unknown
     else:
+        print('dict_to_check')
+        print(dict_to_check)
         result = dict_to_check[key]
     return result
 
@@ -119,7 +104,6 @@ env.filters['format_date_short'] = dt_utils.format_date_short
 env.filters['format_time_short'] = dt_utils.format_time_short
 env.filters['format_tz'] = dt_utils.format_tz
 env.filters['render_schedule_diff'] = render_schedule_diff
-env.filters['render_time_pairs'] = render_time_pairs
 env.filters['render_or_unknown'] = render_or_unknown
 env.filters['render_flightaware'] = render_flightaware
 env.filters['get_time_diff_class'] = get_time_diff_class

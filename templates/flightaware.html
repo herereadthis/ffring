@@ -28,6 +28,14 @@
                 </p>
                 <p class="scheduled">{{ scheduled_out|format_time_short(origin['timezone']) }}</p>
             </div>
+            <p>Takeoff</p>
+            <div class="time_pair">
+                <p class="estimated {{ actual_off|get_time_diff_class(scheduled_off) }}">
+                    {{ actual_off|format_time_short(origin['timezone']) }}
+                    {{ actual_off|format_tz(origin['timezone']) }}
+                </p>
+                <p class="scheduled">{{ scheduled_off|format_time_short(origin['timezone']) }}</p>
+            </div>
         </div>
         <div class="flightinfo_itinenary destination">
             <p class="short_date">{{ estimated_in|format_date_short(local_timezone_name) }}</p>
@@ -38,6 +46,14 @@
                     {{ estimated_in|format_tz(destination['timezone']) }}
                 </p>
                 <p class="scheduled">{{ scheduled_in|format_time_short(destination['timezone']) }}</p>
+            </div>
+            <p>Landing</p>
+            <div class="time_pair">
+                <p class="estimated {{ estimated_on|get_time_diff_class(scheduled_on) }}">
+                    {{ estimated_on|format_time_short(destination['timezone']) }}
+                    {{ estimated_on|format_tz(destination['timezone']) }}
+                </p>
+                <p class="scheduled">{{ scheduled_on|format_time_short(destination['timezone']) }}</p>
             </div>
         </div>
     </div>

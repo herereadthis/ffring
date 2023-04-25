@@ -32,7 +32,6 @@
                 <div class="flightinfo">
                     <div class="flightinfo_intinerary_container">
                         <div class="flightinfo_itinerary_origin flightinfo_itinenary">
-                            {{ 'Takeoff'|render_time_pairs(flightaware['actual_off'], flightaware['scheduled_off'], local_timezone_name) }}
                             <div class="flightinfo_time_pair">
                                 <div><span>Schedule:</span></div>
                                 {% with diff_departure_minutes = flightaware['diff_departure_minutes'] %}
@@ -45,7 +44,6 @@
                             </div>
                         </div>
                         <div class="flightinfo_itinerary_destination flightinfo_itinenary">
-                            {{ 'Landing'|render_time_pairs(flightaware['estimated_on'], flightaware['scheduled_on'], local_timezone_name) }}
                             <div class="flightinfo_time_pair">
                                 <div><span>Schedule:</span></div>
                                 {% with diff_arrival_minutes = flightaware['diff_arrival_minutes'] %}
@@ -62,7 +60,7 @@
             {% endif %}
         {% endwith %}
         {% with identity = nearest_aircraft['identity'] %}
-            <li class="list_item">Registration: <span class="code_text">{{ identity['registration'] }}</span></li>
+            <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
         {% endwith %}
         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
