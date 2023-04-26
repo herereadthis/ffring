@@ -1,0 +1,12 @@
+<div class="weather">
+    <ul>
+        <li class="list_item">Weather: {{ shortForecast }}</li>
+        <li class="list_item">Temperature: 
+            <span class="code_text">{{ temperature }}&deg;F</span>
+        </li>
+        <li class="list_item">Humidity: {{ relativeHumidity }}%</li>
+        <li class="list_item">Precipitation: {{ precipitation }}%</li>
+        <li class="list_item">Wind: {{ windDirection }} at {{ windSpeed }}</li>
+        <li class="list_item">Interval: {{ startTime }} - {{ endTime }}</li>
+    </ul>
+</div>

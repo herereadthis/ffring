@@ -86,6 +86,14 @@ def render_flightaware(flightaware, local_timezone_name):
         output = template.render(**flightaware)
         return output
 
+def render_weather(weather_report):
+    if weather_report is None or len(weather_report) == 0:
+        return '<div/>'
+    else:
+        template = env.get_template('weather.html')
+        output = template.render(**weather_report)
+        return output
+
 def get_time_diff_class(actual_time, scheduled_time):
     td_class = 'equal'
     if (actual_time is not None and scheduled_time is not None):
@@ -106,6 +114,7 @@ env.filters['format_tz'] = dt_utils.format_tz
 env.filters['render_schedule_diff'] = render_schedule_diff
 env.filters['render_or_unknown'] = render_or_unknown
 env.filters['render_flightaware'] = render_flightaware
+env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
 
 def add_flask_built_ins(context):

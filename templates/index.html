@@ -95,16 +95,7 @@
         {% endif %}
     {% endwith %}
     <h2>Weather</h2>
-    <ul>
-        <li class="list_item">Weather: {{ weather_report['shortForecast'] }}</li>
-        <li class="list_item">Temperature: 
-            <span class="code_text">{{ weather_report['temperature'] }}&deg;F</span>
-        </li>
-        <li class="list_item">Humidity: {{ weather_report['relativeHumidity'] }}%</li>
-        <li class="list_item">Precipitation: {{ weather_report['precipitation'] }}%</li>
-        <li class="list_item">Wind: {{ weather_report['windDirection'] }} at {{ weather_report['windSpeed'] }}</li>
-        <li class="list_item">Interval: {{ weather_report['startTime'] }} - {{ weather_report['endTime'] }}</li>
-    </ul>
+    {{ weather_report|render_weather }}
     <h2>Base Station</h2>
     <ul>
         <li class="list_item">Coordinates: 
