@@ -2,15 +2,6 @@
     width: 64rem;
 }
 
-.flightinfo_timeline_container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .flightinfo_airports_container {
     width: 100%;
     display: flex;
@@ -20,23 +11,13 @@
     align-items: center;
 }
 
-.flightinfo_airports_container div {
+
+.airport_full_name {
     font-size: 1.6rem;
-    line-height: 2.6rem;
+    line-height: 2.4rem;
 }
 
-.flightinfo_airports_container .origin {
-    text-align: left;
 
-}
-
-.flightinfo_airports_container .destination {
-    text-align: right;
-}
-
-.flightinfo_timeline_origin {
-    text-align: left;
-}
 
 .flightinfo_timeline_progress {
     height: 1rem;
@@ -44,9 +25,6 @@
     width: 100%;
 }
 
-.flightinfo_timeline_destination {
-    text-align: right;
-}
 
 .flightinfo_airport {
     width: 12rem;
@@ -64,16 +42,20 @@
 
 
 .flightinfo_itinenary {
-    width: 100%;
-    flex-grow: 1;
 }
 
 .flightinfo_itinenary.origin {
-    margin-right: 1.2rem;
+    padding-right: 2.3rem;
+    height: 100%;
+    border-right: 0.1rem solid #CCC;
+    flex-grow: 2;
 }
 
 .flightinfo_itinenary.destination {
-    margin-left: 1.2rem;
+    padding-left: 2.3rem;
+    height: 100%;
+    border-left: 0.1rem solid #CCC;
+    flex-grow: 1;
 }
 
 .short_date {

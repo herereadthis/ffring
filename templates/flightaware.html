@@ -1,24 +1,11 @@
 
 <div class="flightinfo">
-    <div class="flightinfo_airports_container">
-        <div class="origin">
-            {{ origin|render_or_unknown('name') }}
-        </div>
-        <div class="destination">
-            {{ destination|render_or_unknown('name') }}
-        </div>
-    </div>
-    <div class="flightinfo_timeline_container">
-        <div class="flightinfo_timeline_origin flightinfo_airport">
-            {{ origin|render_or_unknown('code_iata') }}
-        </div>
-        <div class="flightinfo_timeline_progress"></div>
-        <div class="flightinfo_timeline_destination flightinfo_airport">
-            {{ destination|render_or_unknown('code_iata') }}
-        </div>
-    </div>
     <div class="flightinfo_intinerary_container">
         <div class="flightinfo_itinenary origin">
+            <p class="airport_full_name">{{ origin|render_or_unknown('name') }}</p>
+            <div class="flightinfo_airport">
+                {{ origin|render_or_unknown('code_iata') }}
+            </div>
             <p class="short_date">{{ actual_out|format_date_short(local_timezone_name) }}</p>
             {% if actual_out is none and scheduled_out is none %}
                 <p>Gate Departure (unknown)</p>
@@ -47,6 +34,10 @@
             {{ diff_departure_minutes|render_schedule_diff  }}
         </div>
         <div class="flightinfo_itinenary destination">
+            <p class="airport_full_name">{{ destination|render_or_unknown('name') }}</p>
+            <div class="flightinfo_airport">
+                {{ destination|render_or_unknown('code_iata') }}
+            </div>
             <p class="short_date">{{ estimated_in|format_date_short(local_timezone_name) }}</p>
             <p>Gate Arrival</p>
             {% if estimated_in is none and scheduled_in is none %}
