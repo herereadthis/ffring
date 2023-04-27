@@ -106,34 +106,6 @@
     margin-left: 1.2rem;
 }
 
-.flightinfo_time_pair {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-}
-
-.flightinfo_time_pair > div {
-    font-size: 1.6rem;
-    line-height: 2.6rem;
-}
-
-.flightinfo_time_pair > div:first-child {
-    text-align: right;
-    width: 40%;
-}
-
-
-.flightinfo_time_pair > div:first-child span {
-    padding-right: 0.5rem;
-}
-
-.flightinfo_time_pair > div:last-child {
-    text-align: left;
-    width: 60%;
-}
-
 .schedule_early {
     color: #090;
 }

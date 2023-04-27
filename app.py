@@ -59,10 +59,11 @@ stuff = {
 def render_schedule_diff(value):
     print(f'schedule_diff: {value}')
     result = ''
-    if value < 0:
-        result = f'<div class="schedule_early">{abs(value)} minutes early</div>'
-    else:
-        result = f'<div class="schedule_delayed">{value} minutes delayed</div>'
+    if value is not None:
+        if value < 0:
+            result = f'<span class="schedule_early">{abs(value)} minutes early</span>'
+        else:
+            result = f'<span class="schedule_delayed">{value} minutes delayed</span>'
     return result
 
 def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
@@ -102,7 +103,7 @@ def get_time_diff_class(actual_time, scheduled_time):
             td_class = 'early'
         elif time_diff == 1:
             td_class = 'delayed'
-    
+
     return td_class
         
 

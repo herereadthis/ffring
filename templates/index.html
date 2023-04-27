@@ -27,38 +27,6 @@
             </li>
         {% endwith %}
         {{ nearest_aircraft['flightaware']|render_flightaware(local_timezone_name) }}
-        {% with flightaware = nearest_aircraft['flightaware'] %}
-            {% if flightaware is defined and flightaware|length %}
-                <div class="flightinfo">
-                    <div class="flightinfo_intinerary_container">
-                        <div class="flightinfo_itinerary_origin flightinfo_itinenary">
-                            <div class="flightinfo_time_pair">
-                                <div><span>Schedule:</span></div>
-                                {% with diff_departure_minutes = flightaware['diff_departure_minutes'] %}
-                                    {% if diff_departure_minutes is defined and diff_departure_minutes is not none  %}
-                                        {{ diff_departure_minutes|render_schedule_diff  }}
-                                    {% else %}
-                                        unknown
-                                    {% endif %}
-                                {% endwith %}
-                            </div>
-                        </div>
-                        <div class="flightinfo_itinerary_destination flightinfo_itinenary">
-                            <div class="flightinfo_time_pair">
-                                <div><span>Schedule:</span></div>
-                                {% with diff_arrival_minutes = flightaware['diff_arrival_minutes'] %}
-                                    {% if diff_arrival_minutes is defined and diff_arrival_minutes is not none  %}
-                                        {{ diff_arrival_minutes|render_schedule_diff  }}
-                                    {% else %}
-                                        unknown
-                                    {% endif %}
-                                {% endwith %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-        {% endwith %}
         {% with identity = nearest_aircraft['identity'] %}
             <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
         {% endwith %}
