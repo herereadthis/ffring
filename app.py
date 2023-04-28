@@ -57,7 +57,6 @@ stuff = {
 
 
 def render_schedule_diff(value):
-    print(f'schedule_diff: {value}')
     result = ''
     if value is not None:
         if value < 0:
@@ -73,8 +72,6 @@ def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
     elif key not in dict_to_check or dict_to_check[key] is None or len(dict_to_check[key]) == 0:
         result = unknown
     else:
-        print('dict_to_check')
-        print(dict_to_check)
         result = dict_to_check[key]
     return result
 
