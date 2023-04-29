@@ -63,6 +63,8 @@ def render_schedule_diff(value):
             result = f'<span class="schedule_early">{abs(value)} minutes early</span>'
         else:
             result = f'<span class="schedule_delayed">{value} minutes delayed</span>'
+    else:
+        result = 'Unknown scheduling'
     return result
 
 def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
