@@ -6,35 +6,8 @@
             <div class="flightinfo_airport">
                 {{ origin|render_or_unknown('code_iata') }}
             </div>
-            <p class="text_normal">{{ actual_out|format_date_short(local_timezone_name) }}</p>
-            {% if actual_out is none and scheduled_out is none %}
-                <p class="text_normal">Gate Departure (unknown)</p>
-            {% else %}
-                <p class="text_normal">Gate Departure</p>
-                <div class="time_pair">
-                    <p class="estimated {{ actual_out|get_time_diff_class(scheduled_out) }}">
-                        {{ actual_out|format_time_short(origin['timezone']) }}
-                    </p>
-                    <p class="timezone text_normal {{ actual_out|get_time_diff_class(scheduled_out) }}">
-                        {{ actual_out|format_tz(destination['timezone']) }}
-                    </p>
-                    <p class="scheduled text_normal">{{ scheduled_out|format_time_short(origin['timezone']) }}</p>
-                </div>
-            {% endif %}
-            {% if actual_off is none and scheduled_off is none %}
-                <p class="text_normal">Takeoff (unknown)</p>
-            {% else %}
-                <p class="text_normal">Takeoff</p>
-                <div class="time_pair">
-                    <p class="estimated {{ actual_off|get_time_diff_class(scheduled_off) }}">
-                        {{ actual_off|format_time_short(origin['timezone']) }}
-                    </p>
-                    <p class="timezone text_normal {{ actual_off|get_time_diff_class(scheduled_off) }}">
-                        {{ actual_off|format_tz(destination['timezone']) }}
-                    </p>
-                    <p class="scheduled text_normal">{{ scheduled_off|format_time_short(origin['timezone']) }}</p>
-                </div>
-            {% endif %}
+            {{ 'Departure'|render_time_pair(actual_out, scheduled_out, origin['timezone']) }}
+            {{ 'Takeoff'|render_time_pair(actual_off, scheduled_off, origin['timezone']) }}
             <p class="text_normal">{{ diff_departure_minutes|default(None)|render_schedule_diff }}</p>
         </div>
         <div class="flightinfo_itinenary destination">
@@ -42,35 +15,8 @@
             <div class="flightinfo_airport">
                 {{ destination|render_or_unknown('code_iata') }}
             </div>
-            <p class="text_normal">{{ estimated_in|format_date_short(local_timezone_name) }}</p>
-            {% if estimated_in is none and scheduled_in is none %}
-                <p class="text_normal">Gate Arrival (unknown)</p>
-            {% else %}
-                <p class="text_normal">Gate Arrival</p>
-                <div class="time_pair">
-                    <p class="estimated {{ estimated_in|get_time_diff_class(scheduled_in) }}">
-                        {{ estimated_in|format_time_short(destination['timezone']) }}
-                    </p>
-                    <p class="timezone text_normal {{ estimated_in|get_time_diff_class(scheduled_in) }}">
-                        {{ estimated_in|format_tz(destination['timezone']) }}
-                    </p>
-                    <p class="scheduled text_normal">{{ scheduled_in|format_time_short(destination['timezone']) }}</p>
-                </div>
-            {% endif %}
-            {% if estimated_on is none and scheduled_on is none %}
-                <p class="text_normal">Landing: unknown</p>
-            {% else %}
-                <p class="text_normal">Landing</p>
-                <div class="time_pair">
-                    <p class="estimated {{ estimated_on|get_time_diff_class(scheduled_on) }}">
-                        {{ estimated_on|format_time_short(destination['timezone']) }}
-                    </p>
-                    <p class="timezone text_normal {{ estimated_on|get_time_diff_class(scheduled_on) }}">
-                        {{ estimated_on|format_tz(destination['timezone']) }}
-                    </p>
-                    <p class="scheduled text_normal">{{ scheduled_on|format_time_short(destination['timezone']) }}</p>
-                </div>
-            {% endif %}
+            {{ 'Gate Arrival'|render_time_pair(estimated_in, scheduled_in, destination['timezone']) }}
+            {{ 'Landing'|render_time_pair(estimated_on, scheduled_on, destination['timezone']) }}
             <p class="text_normal">{{ diff_arrival_minutes|default(None)|render_schedule_diff }}</p>
         </div>
     </div>

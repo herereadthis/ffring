@@ -86,6 +86,18 @@ def render_flightaware(flightaware, local_timezone_name):
         output = template.render(**flightaware)
         return output
 
+def render_time_pair(title, estimated, scheduled, timezone):
+    props = {
+        'title': title,
+        'estimated': estimated,
+        'scheduled': scheduled,
+        'timezone': timezone
+    }
+    template = env.get_template('time_pair.html')
+    output = template.render(**props)
+    return output
+
+
 def render_weather(weather_report):
     if weather_report is None or len(weather_report) == 0:
         return '<div/>'
@@ -114,6 +126,7 @@ env.filters['format_tz'] = dt_utils.format_tz
 env.filters['render_schedule_diff'] = render_schedule_diff
 env.filters['render_or_unknown'] = render_or_unknown
 env.filters['render_flightaware'] = render_flightaware
+env.filters['render_time_pair'] = render_time_pair
 env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
 

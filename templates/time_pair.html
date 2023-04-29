@@ -1,0 +1,14 @@
+{% if estimated is none and scheduled is none %}
+    <p class="text_normal">{{ title }} (unknown)</p>
+{% else %}
+    <p class="text_normal">{{ title }}</p>
+    <div class="time_pair">
+        <p class="estimated {{ estimated|get_time_diff_class(scheduled) }}">
+            {{ estimated|format_time_short(timezone) }}
+        </p>
+        <p class="timezone text_normal {{ estimated|get_time_diff_class(scheduled) }}">
+            {{ estimated|format_tz(timezone) }}
+        </p>
+        <p class="scheduled text_normal">{{ scheduled|format_time_short(timezone) }}</p>
+    </div>
+{% endif %}
