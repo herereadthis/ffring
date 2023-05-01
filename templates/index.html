@@ -10,24 +10,37 @@
         <li class="list_item"><a href="{{ system['piaware']['url'] }}">{{ system['piaware']['label'] }}</a></li>
     </ul>
     <h2>Closest Aircraft</h2>
+    <div class="flightinfo">
+        <div class="flightinfo_intinerary_container">
+            {{ nearest_aircraft['flightaware']|render_flightaware(nearest_aircraft['identity'], local_timezone_name) }}
+            <div class="flightinfo_itinenary details">
+                {% with identity = nearest_aircraft['identity'] %}
+                    <p class="flight text_normal">
+                        {% if identity['owner'] %}
+                            {{ identity['owner'] }}
+                        {% endif %}
+                        {% if nearest_aircraft['flight'] is none %}
+                            unknown
+                        {% else %}
+                            {{ nearest_aircraft['flight'] }}
+                        {% endif %}
+                    </p>
+                    {% if identity['image'] is defined and identity['image']|length  %}
+                        <img src="{{ identity['image']['src'] }}" width="100%" />
+                    {% else %}
+                        <p><em>(No image found for aircraft)</em></p>
+                    {% endif %}
+                    <ul>
+                        <li class="list_item">{{ identity['manufacturer'] }} {{ identity['type'] }}
+                            ({{ nearest_aircraft['category'] }})
+                        </li>
+                        <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
+                    </ul>
+                {% endwith %}
+            </div>
+        </div>
+    </div>
     <ul>
-        {{ nearest_aircraft['flightaware']|render_flightaware(local_timezone_name) }}
-        {% with identity = nearest_aircraft['identity'] %}
-            <li class="list_item">Flight: 
-                {% if identity['owner'] %}
-                    {{ identity['owner'] }}
-                {% endif %}
-                {% if nearest_aircraft['flight'] is none %}
-                    unknown
-                {% else %}
-                    <span class="code_text">{{ nearest_aircraft['flight'] }}</span>
-                {% endif %}
-            </li>
-            <li class="list_item">{{ identity['manufacturer'] }} {{ identity['type'] }}
-                ({{ nearest_aircraft['category'] }})
-            </li>
-            <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
-        {% endwith %}
         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
         <li class="list_item">FlightAware:
@@ -53,13 +66,6 @@
             <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
         <li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>
     </ul>
-    {% with identity = nearest_aircraft['identity'] %}
-        {% if identity['image'] is defined and identity['image']|length  %}
-            <img src="{{ identity['image']['src'] }}"/>
-        {% else %}
-            <p><em>(No image found for aircraft)</em></p>
-        {% endif %}
-    {% endwith %}
     <h2>Weather</h2>
     {{ weather_report|render_weather }}
     <h2>Base Station</h2>

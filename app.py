@@ -77,12 +77,13 @@ def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
         result = dict_to_check[key]
     return result
 
-def render_flightaware(flightaware, local_timezone_name):
+def render_flightaware(flightaware, identity, local_timezone_name):
     if flightaware is None or len(flightaware) == 0:
         return '<div/>'
     else:
         template = env.get_template('flightaware.html')
         flightaware['local_timezone_name'] = local_timezone_name
+        flightaware['identity'] = identity
         output = template.render(**flightaware)
         return output
 
