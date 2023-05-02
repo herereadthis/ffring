@@ -1,7 +1,7 @@
 
 <div class="flightinfo_itinenary flightaware">
     <div class="origin">
-        <p class="text_normal">Origin</p>
+        <p class="text_medium title">Origin</p>
         <p class="text_normal">{{ origin|render_or_unknown('name') }}</p>
         <div class="flightinfo_airport">
             {{ origin|render_or_unknown('code_iata', 'N/A') }}
@@ -18,7 +18,7 @@
         <p class="text_normal">{{ diff_departure_minutes|default(None)|render_schedule_diff }}</p>
     </div>
     <div class="destination">
-        <p class="text_normal">Destination</p>
+        <p class="text_medium title">Destination</p>
         <p class="text_normal">{{ destination|render_or_unknown('name') }}</p>
         <div class="flightinfo_airport">
             {{ destination|render_or_unknown('code_iata') }}

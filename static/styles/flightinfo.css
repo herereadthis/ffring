@@ -48,6 +48,10 @@
     padding-left: 2.4rem;
 }
 
+.flightinfo_itinenary .title {
+    text-transform: uppercase;
+}
+
 .time_pair {
     display: flex;
     padding-bottom: 1.2rem;
