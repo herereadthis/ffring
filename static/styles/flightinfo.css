@@ -22,25 +22,48 @@
 
 .flightinfo_itinenary.flightaware {
     height: 100%;
-    border-top: 0.2rem solid #CCC;
-    border-right: 0.2rem solid #CCC;
-    border-bottom: 0.2rem solid #CCC;
-    width: 23.9rem;
+    border-top: 0.4rem solid #000;
+    border-right: 0.4rem solid #000;
+    border-bottom: 0.4rem solid #000;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 23.8rem;
     box-sizing: border-box;
 
 }
 
+.flightinfo_itinenary .flight {
+    background-color: #A4DDED;
+    padding: 0.6rem 0 0.6rem 2.2rem;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    line-height: 2.4rem;
+}
+.flightinfo_itinenary .date {
+    padding-bottom: 1.2rem;
+}
+
 .flightinfo_itinenary.details {
-    padding-left: 2.3rem;
     height: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+}
+
+.flightinfo_itinenary.details .image {
+    padding-left: 2.2rem;
+}
+
+.flightinfo_itinenary.details .aircraft_details {
+    padding-left: 2.2rem;
 }
 
 .flightinfo_itinenary .origin {
-    padding-top: 2.2rem;
-    padding-bottom: 2.3rem;
+    padding-top: 2.0rem;
+    padding-bottom: 2.2rem;
     padding-left: 2.4rem;
-    border-bottom: 0.2rem solid #CCC;
-    margin-bottom: 2.3rem;
+    border-bottom: 0.4rem solid #000;
+    margin-bottom: 2.2rem;
 }
 
 .flightinfo_itinenary .destination {

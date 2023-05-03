@@ -6,7 +6,7 @@
         <div class="flightinfo_airport">
             {{ origin|render_or_unknown('code_iata', 'N/A') }}
         </div>
-        <p class="text_normal">
+        <p class="date text_normal">
             {% if actual_out is not none %}
                 {{ actual_out|format_date_short(origin['timezone']) }}
             {% elif actual_off is not none %}
@@ -23,7 +23,7 @@
         <div class="flightinfo_airport">
             {{ destination|render_or_unknown('code_iata') }}
         </div>
-        <p class="text_normal">
+        <p class="date text_normal">
             {% if estimated_in is not none %}
                 {{ estimated_in|format_date_short(origin['timezone']) }}
             {% elif estimated_on is not none %}

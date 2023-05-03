@@ -19,22 +19,32 @@
                         {% if identity['owner'] %}
                             {{ identity['owner'] }}
                         {% endif %}
-                        {% if nearest_aircraft['flight'] is none %}
-                            unknown
-                        {% else %}
+                        {% if nearest_aircraft.get('flight', None) is not none %}
                             {{ nearest_aircraft['flight'] }}
+                        {% elif nearest_aircraft.get('flightaware', {}).get('ident', None) is not none %}
+                           {{ nearest_aircraft['flightaware']['ident'] }}
+                        {% else %}
+                            unknown
                         {% endif %}
                     </p>
-                    {% if identity['image'] is defined and identity['image']|length  %}
-                        <img src="{{ identity['image']['src'] }}" width="100%" />
-                    {% else %}
-                        <p><em>(No image found for aircraft)</em></p>
-                    {% endif %}
-                    <ul>
+                    <div class="image">
+                        {% if identity['image'] is defined and identity['image']|length  %}
+                                <img src="{{ identity['image']['src'] }}" width="100%" />
+                        {% else %}
+                            <p><em>(No image found for aircraft)</em></p>
+                        {% endif %}
+                    </div>
+                    <ul class="aircraft_details">
                         <li class="list_item">{{ identity['manufacturer'] }} {{ identity['type'] }}
                             ({{ nearest_aircraft['category'] }})
                         </li>
                         <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
+                        <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
+                        <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
+                        <li class="list_item">FlightAware:
+                            <a href="{{ nearest_aircraft['flightaware_urls']['live']}}">Live</a> |
+                            <a href="{{ nearest_aircraft['flightaware_urls']['redirect']}}">Redirect</a>
+                        </li>
                         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
                         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
                         <li class="list_item">FlightAware:
@@ -47,12 +57,6 @@
         </div>
     </div>
     <ul>
-        <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
-        <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
-        <li class="list_item">FlightAware:
-            <a href="{{ nearest_aircraft['flightaware_urls']['live']}}">Live</a> |
-            <a href="{{ nearest_aircraft['flightaware_urls']['redirect']}}">Redirect</a>
-        </li>
         <li class="list_item">Distance: 
             {{ nearest_aircraft['distance']['direction'] }}, 
             <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
