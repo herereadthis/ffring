@@ -15,17 +15,21 @@
             {{ nearest_aircraft['flightaware']|render_flightaware(nearest_aircraft['identity'], local_timezone_name) }}
             <div class="flightinfo_itinenary details">
                 {% with identity = nearest_aircraft['identity'] %}
-                    <p class="flight text_medium">
-                        {% if identity['owner'] %}
-                            {{ identity['owner'] }}
-                        {% endif %}
-                        {% if nearest_aircraft.get('flight', None) is not none %}
-                            {{ nearest_aircraft['flight'] }}
-                        {% elif nearest_aircraft.get('flightaware', {}).get('ident', None) is not none %}
-                           {{ nearest_aircraft['flightaware']['ident'] }}
-                        {% else %}
-                            unknown
-                        {% endif %}
+                    <p class="flight text_large">
+                        <span class="text_medium" style="line-height: 3.6rem">
+                            {% if identity['owner'] %}
+                                {{ identity['owner'] }}
+                            {% endif %}
+                        </span>
+                        <span class="text_large">
+                            {% if nearest_aircraft.get('flight', None) is not none %}
+                                {{ nearest_aircraft['flight'] }}
+                            {% elif nearest_aircraft.get('flightaware', {}).get('ident', None) is not none %}
+                            {{ nearest_aircraft['flightaware']['ident'] }}
+                            {% else %}
+                                unknown
+                            {% endif %}
+                        </span>
                     </p>
                     <div class="image">
                         {% if identity['image'] is defined and identity['image']|length  %}
