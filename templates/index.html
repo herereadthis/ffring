@@ -4,11 +4,11 @@
     {% block header %}
         <h1>{% block title %}{{ system['title'] }}{% endblock %}</h1>
     {% endblock %}
-    <ul>
-        <li class="list_item"><a href="{{ system['tar1090']['url'] }}">{{ system['tar1090']['label'] }}</a></li>
-        <li class="list_item"><a href="{{ system['graphs1090']['url'] }}">{{ system['graphs1090']['label'] }}</a></li>
-        <li class="list_item"><a href="{{ system['piaware']['url'] }}">{{ system['piaware']['label'] }}</a></li>
-    </ul>
+    <p class="text_normal">
+        <a href="{{ system['tar1090']['url'] }}">{{ system['tar1090']['label'] }}</a> |
+        <a href="{{ system['graphs1090']['url'] }}">{{ system['graphs1090']['label'] }}</a> |
+        <a href="{{ system['piaware']['url'] }}">{{ system['piaware']['label'] }}</a>
+    </p>
     <h2>Closest Aircraft</h2>
     <div class="flightinfo">
         <div class="flightinfo_intinerary_container">
@@ -55,31 +55,29 @@
                             <a href="{{ nearest_aircraft['flightaware_urls']['live']}}">Live</a> |
                             <a href="{{ nearest_aircraft['flightaware_urls']['redirect']}}">Redirect</a>
                         </li>
+                        <li class="list_item">Distance: 
+                            {{ nearest_aircraft['distance']['direction'] }}, 
+                            <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
+                            |
+                            <span class="code_text">
+                                {% if nearest_aircraft['distance']['km'] > 2 %}
+                                    {{ nearest_aircraft['distance']['km']|round(2) }} km
+                                {% else %}
+                                    {{ (nearest_aircraft['distance']['m'])|round|int }} m
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="list_item">Altitude: <span class="code_text">{{ nearest_aircraft['alt_geom']}} ft</span></li>
+                        <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
+                        <li class="list_item">Vertical_rate: <span class="code_text">{{ nearest_aircraft['baro_rate'] }} ft/min</span></li>
+                        <li class="list_item">Track: {{ nearest_aircraft['movement']['direction'] }}, 
+                            <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
+                        <li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>
                     </ul>
                 {% endwith %}
             </div>
         </div>
     </div>
-    <ul>
-        <li class="list_item">Distance: 
-            {{ nearest_aircraft['distance']['direction'] }}, 
-            <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
-            |
-            <span class="code_text">
-                {% if nearest_aircraft['distance']['km'] > 2 %}
-                    {{ nearest_aircraft['distance']['km']|round(2) }} km
-                {% else %}
-                    {{ (nearest_aircraft['distance']['m'])|round|int }} m
-                {% endif %}
-            </span>
-        </li>
-        <li class="list_item">Altitude: <span class="code_text">{{ nearest_aircraft['alt_geom']}} ft</span></li>
-        <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
-        <li class="list_item">Vertical_rate: <span class="code_text">{{ nearest_aircraft['baro_rate'] }} ft/min</span></li>
-        <li class="list_item">Track: {{ nearest_aircraft['movement']['direction'] }}, 
-            <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
-        <li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>
-    </ul>
     <h2>Weather</h2>
     {{ weather_report|render_weather }}
     <h2>Base Station</h2>
