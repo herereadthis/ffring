@@ -100,11 +100,11 @@
 }
 
 .estimated.early, .timezone.early {
-    color: #090;
+    color: #FFF;
 }
 
 .estimated.delayed, .timezone.delayed {
-    color: #900
+    color: #FFF
 }
 
 .time_pair .timezone {
@@ -125,3 +125,25 @@
     color: #C00;
 }
 
+.flightinfo_itinenary .time_label {
+    padding-left: 2.4rem;
+}
+
+.flightinfo_itinenary .time_pair .estimated {
+    display: flex;
+    padding-left: 2.4rem;
+}
+
+.flightinfo_itinenary .valid.early .estimated,
+.flightinfo_itinenary .invalid ~ .valid.early .estimated  {
+    background-color: #090;
+}
+
+.flightinfo_itinenary .valid.delayed .estimated,
+.flightinfo_itinenary .invalid ~ .valid.delayed .estimated  {
+    background-color: #C00;
+}
+
+.flightinfo_itinenary .valid ~ .valid .estimated {
+    background-color: transparent;
+}

@@ -88,11 +88,13 @@ def render_flightaware(flightaware, identity, local_timezone_name):
         return output
 
 def render_time_pair(title, estimated, scheduled, timezone):
+    is_valid = estimated is not None and scheduled is not None
     props = {
         'title': title,
         'estimated': estimated,
         'scheduled': scheduled,
-        'timezone': timezone
+        'timezone': timezone,
+        'is_valid': is_valid
     }
     template = env.get_template('time_pair.html')
     output = template.render(**props)
