@@ -2,7 +2,7 @@
     <p class="time_label text_normal">{{ title }}</p>
     <div class="valid {{ estimated|get_time_diff_class(scheduled) }}">
         <div class="time_pair">
-            <div class="estimated">
+            <div class="estimated_container">
                 <p class="estimated {{ estimated|get_time_diff_class(scheduled) }}">
                     {{ estimated|format_time_short(timezone) }}
                 </p>

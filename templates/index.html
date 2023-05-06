@@ -31,6 +31,9 @@
                             {% endif %}
                         </span>
                     </p>
+                    <p class="aircraft_type text_normal">{{ identity['manufacturer'] }} {{ identity['type'] }}
+                        ({{ nearest_aircraft['category'] }})
+                    </p>
                     <div class="image">
                         {% if identity['image'] is defined and identity['image']|length  %}
                                 <img src="{{ identity['image']['src'] }}" width="100%" />
@@ -39,9 +42,6 @@
                         {% endif %}
                     </div>
                     <ul class="aircraft_details">
-                        <li class="list_item">{{ identity['manufacturer'] }} {{ identity['type'] }}
-                            ({{ nearest_aircraft['category'] }})
-                        </li>
                         <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
                         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
                         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>

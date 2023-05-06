@@ -30,8 +30,10 @@
     background-color: #A4DDED;
     padding: 0.6rem 0 0.6rem 2.2rem;
     margin-top: 1.2rem;
-    margin-bottom: 1.2rem;
+    /* margin-bottom: 1.2rem; */
     line-height: 3.6rem;
+    display: inline-block;
+    padding-right: 1.2rem;
 }
 .flightinfo_itinenary .date {
     padding-bottom: 1.2rem;
@@ -45,7 +47,7 @@
 }
 
 .flightinfo_itinenary.details .image {
-    padding-left: 2.2rem;
+    /* padding-left: 2.2rem; */
 }
 
 .flightinfo_itinenary.details .aircraft_details {
@@ -115,6 +117,7 @@
     color: #999;
     text-decoration: line-through;
     margin-left: 0.6rem;
+    padding-top: 0.6rem;
 }
 
 .schedule_early {
@@ -129,21 +132,35 @@
     padding-left: 2.4rem;
 }
 
-.flightinfo_itinenary .time_pair .estimated {
+.flightinfo_itinenary .time_pair .estimated_container {
     display: flex;
-    padding-left: 2.4rem;
+    padding: 0.6rem 0.6rem 0.6rem 2.4rem;
 }
 
-.flightinfo_itinenary .valid.early .estimated,
-.flightinfo_itinenary .invalid ~ .valid.early .estimated  {
+.flightinfo_itinenary .valid.early .estimated_container,
+.flightinfo_itinenary .invalid ~ .valid.early .estimated_container  {
     background-color: #090;
 }
 
-.flightinfo_itinenary .valid.delayed .estimated,
-.flightinfo_itinenary .invalid ~ .valid.delayed .estimated  {
+.flightinfo_itinenary .valid.delayed .estimated_container,
+.flightinfo_itinenary .invalid ~ .valid.delayed .estimated_container  {
     background-color: #C00;
 }
 
-.flightinfo_itinenary .valid ~ .valid .estimated {
+.flightinfo_itinenary .valid ~ .valid .estimated_container {
     background-color: transparent;
+}
+
+.flightinfo_itinenary .valid ~ .valid .estimated_container .estimated.early,
+.flightinfo_itinenary .valid ~ .valid .estimated_container .timezone.early {
+    color: #090;
+}
+
+.flightinfo_itinenary .valid ~ .valid .estimated_container .estimated.delayed,
+.flightinfo_itinenary .valid ~ .valid .estimated_container .timezone.delayed {
+    color: #900;
+}
+
+.aircraft_type {
+    padding: 0.6rem 0 0.6rem 2.2rem;
 }
