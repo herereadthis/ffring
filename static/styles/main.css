@@ -16,6 +16,16 @@ body {
     text-rendering: optimizeLegibility;
     position: relative;
     font-family: 'century_book';
+
+    /* background: red; */
+    /* background-image: linear-gradient(to bottom right, red 50%, transparent 50%), 
+                      linear-gradient(to top left, red 50%, transparent 50%);
+                      width: 200px;
+                      height: 200px; */
+    background: linear-gradient(to top left, #fff 0%, #fff 50%, #EDBBCB 50%, #EDBBCB 100%);
+    background-position: top left;
+    background-size: 64rem 64rem;
+    background-repeat: no-repeat;
 }
 
 #body_container {

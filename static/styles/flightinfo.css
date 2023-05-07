@@ -78,12 +78,14 @@
     padding-bottom: 2.2rem;
     /* padding-left: 2.4rem; */
     border-bottom: 0.4rem solid #000;
-    margin-bottom: 2.2rem;
+    background-color: #FFF;
 }
 
 
 .flightinfo_itinenary .destination {
-    padding-bottom: 2.2rem;
+    padding-top: 2.2rem;
+    padding-bottom: 2.0rem;
+    background-color: #FFF;
     /* padding-left: 2.4rem; */
 }
 
