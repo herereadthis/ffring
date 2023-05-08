@@ -1,5 +1,11 @@
 .flightinfo {
-    width: 64rem;
+    max-width: 64rem;
+    margin-left: 2.4rem;
+}
+@media (min-width: 1024px) {
+    .flightinfo {
+        margin-left: 2.4rem;
+    }
 }
 
 .flightinfo_intinerary_container {

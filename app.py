@@ -51,7 +51,7 @@ stuff = {
             'stats': f'{BASE_ADSB_URL}/data/stats.json',
             'receiver': f'{BASE_ADSB_URL}/data/receiver.json'
         },
-        'title': 'FFring'
+        'title': 'FFring!'
     }
 }
 

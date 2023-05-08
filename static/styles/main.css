@@ -24,13 +24,12 @@ body {
                       height: 200px; */
     background: linear-gradient(to top left, #fff 0%, #fff 50%, #EDBBCB 50%, #EDBBCB 100%);
     background-position: top left;
-    background-size: 64rem 64rem;
+    background-size: 64vw 64vw;
     background-repeat: no-repeat;
 }
 
 #body_container {
     max-width: 1200px;
-    margin: 0 2.4rem;
 }
 
 @media (min-width: 600px) {
@@ -59,6 +58,23 @@ h1 {
     line-height: 6.0rem;
     font-weight: normal;
     padding-top: 1.2rem;
+    background-color: #FFF;
+    display: inline-block;
+    padding: 1rem;
+    border: 0.4rem solid #000;
+    border-top-width: 0.2rem;
+    margin-left: 2.2rem;
+    box-sizing: border-box;
+    width: 24rem;
+    border-left-color: #FFF;
+    border-top-color: #FFF;
+}
+
+
+@media (min-width: 1024px) {
+    .flightinfo {
+        margin-left: -0.2rem;
+    }
 }
 
 h2 {
