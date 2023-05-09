@@ -2,7 +2,7 @@
 <div class="flightinfo_itinenary flightaware">
     <div class="origin">
         <p class="text_medium title">Origin</p>
-        <p class="text_normal airport_name">{{ origin|render_or_unknown('name') }}</p>
+        <p class="text_normal airport_name">{{ origin|render_or_unknown('name', '<em>Unknown Airport</em>') }}</p>
         <div class="airport_code">
             {{ origin|render_or_unknown('code_iata', 'N/A') }}
         </div>
@@ -19,9 +19,9 @@
     </div>
     <div class="destination">
         <p class="text_medium title">Destination</p>
-        <p class="text_normal airport_name">{{ destination|render_or_unknown('name') }}</p>
+        <p class="text_normal airport_name">{{ destination|render_or_unknown('name', '<em>Unknown Airport</em>') }}</p>
         <div class="airport_code">
-            {{ destination|render_or_unknown('code_iata') }}
+            {{ destination|render_or_unknown('code_iata', 'N/A') }}
         </div>
         <p class="date text_normal">
             {% if estimated_in is not none %}
