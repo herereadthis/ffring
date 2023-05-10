@@ -6,13 +6,15 @@
         <div class="airport_code">
             {{ origin|render_or_unknown('code_iata', 'N/A') }}
         </div>
-        <p class="date text_normal">
-            {% if actual_out is not none %}
-                {{ actual_out|format_date_short(origin['timezone']) }}
-            {% elif actual_off is not none %}
-                {{ actual_off|format_date_short(origin['timezone']) }}
-            {% endif %}
-        </p>
+        {% if origin is not none %}
+            <p class="date text_normal">
+                {% if actual_out is not none %}
+                    {{ actual_out|format_date_short(origin['timezone']) }}
+                {% elif actual_off is not none %}
+                    {{ actual_off|format_date_short(origin['timezone']) }}
+                {% endif %}
+            </p>
+        {% endif %}
         {{ 'Gate Departure'|render_time_pair(actual_out, scheduled_out, origin['timezone']) }}
         {{ 'Takeoff'|render_time_pair(actual_off, scheduled_off, origin['timezone']) }}
         <p class="text_normal time_diff">{{ diff_departure_minutes|default(None)|render_schedule_diff }}</p>

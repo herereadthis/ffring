@@ -7,6 +7,7 @@ from adsb_tools.receiver import Receiver
 from adsb_tools.wake_vortex import WakeVortexCategories
 from adsb_tools.utils import dt_utils
 import adsb_tools.weather
+import math
 # from pprint import pprint
 from flask import Flask, render_template, session, request, url_for
 from src.utils.flask_utils import return_json
@@ -121,7 +122,39 @@ def get_time_diff_class(actual_time, scheduled_time):
             td_class = 'delayed'
 
     return td_class
-        
+
+
+def draw_line(angle, unit_size):
+    # Convert negative angles to their positive equivalent
+    while angle < 0:
+        angle += 360
+
+    print('angle')
+    print(angle)
+
+    # Calculate the center point of the square
+    center_x, center_y = 0,0
+
+    # Calculate the endpoint of the line based on the given angle
+    end_x = center_x + math.cos(math.radians(angle))
+    end_y = center_y - math.sin(math.radians(angle))
+
+    # Scale the coordinates by the unit size
+    center_x *= unit_size
+    center_y *= unit_size
+    end_x *= unit_size
+    end_y *= unit_size
+
+    # Build the SVG code as a string
+    svg_code = '<svg viewBox="0 0 ' + str(2*unit_size) + ' ' +  str(2*unit_size) +'" xmlns="http://www.w3.org/2000/svg">'
+    # svg_code += '<rect x="0" y="0" width="' + str(4*unit_size) + '" height="' + str(4*unit_size) + '" fill="none" stroke="black" stroke-width="2" />'
+    svg_code += '<line x1="' + str(center_x) + '" y1="' + str(center_y) + '" x2="' + str(end_x) + '" y2="' + str(end_y) + '" stroke="red" stroke-width="2" />'
+    svg_code += '</svg>'
+
+    # Return the SVG code as a string
+    return svg_code
+
+
 
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['format_datetime'] = dt_utils.format_datetime
@@ -183,6 +216,18 @@ def get_index():
     else:
         print('Session shall continue with current aircraft...\n')
         aircraft.map_static_aircraft_options(session.get('nearest_aircraft'))
+
+
+
+    angle = aircraft.nearest_aircraft['distance']['degrees']
+    svg = draw_line(angle, 100)
+    print('svg')
+    print(svg)
+    print('svg')
+
+    aircraft.nearest_aircraft['svg'] = svg
+
+
     session['nearest_aircraft'] = aircraft.nearest_aircraft
 
     params = {
