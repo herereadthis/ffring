@@ -147,6 +147,7 @@ def draw_line(angle, unit_size):
 
     # Build the SVG code as a string
     svg_code = '<svg viewBox="0 0 ' + str(2*unit_size) + ' ' +  str(2*unit_size) +'" xmlns="http://www.w3.org/2000/svg">'
+    svg_code += f'<circle cx="{unit_size}" cy="{unit_size}" r="{0.05 * unit_size}" fill="red" />'
     svg_code += '<line x1="' + str(center_x) + '" y1="' + str(center_y) + '" x2="' + str(end_x) + '" y2="' + str(end_y) + '" stroke="red" stroke-width="2" />'
     svg_code += '</svg>'
 
