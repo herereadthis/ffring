@@ -55,18 +55,9 @@
                         </li>
                         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
                         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
-                        <li class="list_item">Distance: 
-                            {{ nearest_aircraft['distance']['degrees']|round(2) }},
-                            {{ nearest_aircraft['distance']['direction'] }}, 
-                            <span class="code_text">{{ nearest_aircraft['distance']['nm']|round(2) }} NM</span>
-                            |
-                            <span class="code_text">
-                                {% if nearest_aircraft['distance']['km'] > 2 %}
-                                    {{ nearest_aircraft['distance']['km']|round(2) }} km
-                                {% else %}
-                                    {{ (nearest_aircraft['distance']['m'])|round|int }} m
-                                {% endif %}
-                            </span>
+                        <li class="list_item">{{ nearest_aircraft['distance']['nm']|round(2) }} nautical miles
+                            {{ nearest_aircraft['distance']['direction'] }} of base station
+                            ({{ nearest_aircraft['distance']['degrees']|int }}&deg;)
                         </li>
                         <li class="list_item">Altitude: <span class="code_text">{{ nearest_aircraft['alt_geom']}} ft</span></li>
                         <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
