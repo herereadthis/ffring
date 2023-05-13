@@ -123,6 +123,14 @@ def get_time_diff_class(actual_time, scheduled_time):
 
     return td_class
 
+def render_climb(baro_rate, altitude):
+    result = f'Flying at {altitude} ft'
+    if baro_rate > 10:
+        result = f'Climbing {baro_rate} ft/min from {altitude} ft'
+    elif baro_rate < -10:
+        result = f'Descending {abs(baro_rate)} ft/min from {altitude} ft'
+    return result
+
 
 def draw_line(angle, unit_size):
     # Convert negative angles to their positive equivalent
@@ -165,6 +173,7 @@ env.filters['render_flightaware'] = render_flightaware
 env.filters['render_time_pair'] = render_time_pair
 env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
+env.filters['render_climb'] = render_climb
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for

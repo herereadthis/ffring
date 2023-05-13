@@ -49,22 +49,22 @@
                         <li class="list_item">Registration: <span class="code_text">{{ identity|render_or_unknown('registration') }}</span></li>
                         <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
                         <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
+                        <li class="list_item">
+                            {{ nearest_aircraft['distance']['nm']|round(2) }} nautical miles
+                            {{ nearest_aircraft['distance']['direction'] }} of base station
+                            ({{ nearest_aircraft['distance']['degrees']|int }}&deg;)
+                        </li>
+                        <li class="list_item">
+                            Tracking {{ nearest_aircraft['movement']['direction'] }}
+                            ({{ nearest_aircraft['movement']['track']|int }}&deg;)
+                            at {{ nearest_aircraft['gs'] }} knots
+                        </li>
+                        <li class="list_item">{{ nearest_aircraft['baro_rate']|render_climb(nearest_aircraft['alt_geom']) }}</li>
+                        <!--<li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>-->
                         <li class="list_item">FlightAware:
                             <a href="{{ nearest_aircraft['flightaware_urls']['live']}}">Live</a> |
                             <a href="{{ nearest_aircraft['flightaware_urls']['redirect']}}">Redirect</a>
                         </li>
-                        <li class="list_item">ADS-B ICAO: <span class="code_text">{{ nearest_aircraft['icao_24'] }}</span></li>
-                        <li class="list_item">Squawk: <span class="code_text">{{ nearest_aircraft['squawk'] }}</span></li>
-                        <li class="list_item">{{ nearest_aircraft['distance']['nm']|round(2) }} nautical miles
-                            {{ nearest_aircraft['distance']['direction'] }} of base station
-                            ({{ nearest_aircraft['distance']['degrees']|int }}&deg;)
-                        </li>
-                        <li class="list_item">Altitude: <span class="code_text">{{ nearest_aircraft['alt_geom']}} ft</span></li>
-                        <li class="list_item">Ground Speed: <span class="code_text">{{ nearest_aircraft['gs'] }} KT</span></li>
-                        <li class="list_item">Vertical_rate: <span class="code_text">{{ nearest_aircraft['baro_rate'] }} ft/min</span></li>
-                        <li class="list_item">Track: {{ nearest_aircraft['movement']['direction'] }}, 
-                            <span class="code_text">{{ nearest_aircraft['movement']['track'] }}&deg;</span></li>
-                        <li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>
                     </ul>
                 {% endwith %}
             </div>
