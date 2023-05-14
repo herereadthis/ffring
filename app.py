@@ -162,6 +162,35 @@ def draw_line(angle, unit_size):
     # Return the SVG code as a string
     return svg_code
 
+def format_schedule(x):
+    diff = abs(x)
+    result = ''
+    if diff == 0:
+        return 'On time'
+    if diff == 1:
+        result = "1 minute"
+    elif diff < 90:
+        result = f"{diff} minutes"
+    else:
+        hours = diff // 60
+        minutes = diff % 60
+        if hours == 1:
+            hour_str = "1 hour"
+        else:
+            hour_str = f"{hours} hours"
+        if minutes == 1:
+            minute_str = "1 minute"
+        else:
+            minute_str = f"{minutes} minutes"
+        result = f"{hour_str}, {minute_str}"
+    if x > 0:
+        result = f'{result} delayed'
+    else:
+        result = f'{result} early'
+    
+    return result
+
+
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['format_datetime'] = dt_utils.format_datetime
 env.filters['format_date_short'] = dt_utils.format_date_short
@@ -174,6 +203,7 @@ env.filters['render_time_pair'] = render_time_pair
 env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
 env.filters['render_climb'] = render_climb
+env.filters['format_schedule'] = format_schedule
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for
