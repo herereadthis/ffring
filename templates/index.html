@@ -54,11 +54,15 @@
                             {{ nearest_aircraft['distance']['direction'] }} of base station
                             ({{ nearest_aircraft['distance']['degrees']|int }}&deg;)
                         </li>
-                        <li class="list_item">
-                            Tracking {{ nearest_aircraft['movement']['direction'] }}
-                            ({{ nearest_aircraft['movement']['track']|int }}&deg;)
-                            at {{ nearest_aircraft['gs'] }} knots
-                        </li>
+                        {% if nearest_aircraft['movement']|length %}
+                            <li class="list_item">
+                                Tracking {{ nearest_aircraft['movement']['direction'] }}
+                                ({{ nearest_aircraft['movement']['track']|int }}&deg;)
+                                at {{ nearest_aircraft['gs'] }} knots
+                            </li>
+                        {% else %}
+                            <li class="list_item">Unknown Tracking</li>
+                        {% endif %}
                         <li class="list_item">{{ nearest_aircraft['baro_rate']|render_climb(nearest_aircraft['alt_geom']) }}</li>
                         <!--<li class="list_item">&#x2191;&#x2197;&#x2192;&#x2198;&#x2193;&#x2199;&#x2190;&#x2196;</li>-->
                         <li class="list_item">FlightAware:

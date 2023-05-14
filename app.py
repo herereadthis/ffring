@@ -57,17 +57,6 @@ stuff = {
 }
 
 
-def render_schedule_diff(value):
-    result = ''
-    if value is not None:
-        if value < 0:
-            result = f'<span class="schedule_early">{abs(value)} minutes early</span>'
-        else:
-            result = f'<span class="schedule_delayed">{value} minutes delayed</span>'
-    else:
-        result = 'Unknown scheduling'
-    return result
-
 def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
     result = unknown
     print('dict_to_check')
@@ -162,31 +151,35 @@ def draw_line(angle, unit_size):
     # Return the SVG code as a string
     return svg_code
 
-def format_schedule(x):
-    diff = abs(x)
-    result = ''
-    if diff == 0:
-        return 'On time'
-    if diff == 1:
-        result = "1 minute"
-    elif diff < 90:
-        result = f"{diff} minutes"
+def render_schedule_diff(x):
+    if x is None:
+        result = 'unknown scheduling'
     else:
-        hours = diff // 60
-        minutes = diff % 60
-        if hours == 1:
-            hour_str = "1 hour"
+        diff = round(abs(x))
+        result = ''
+        if diff == 0:
+            result = 'On time'
         else:
-            hour_str = f"{hours} hours"
-        if minutes == 1:
-            minute_str = "1 minute"
-        else:
-            minute_str = f"{minutes} minutes"
-        result = f"{hour_str}, {minute_str}"
-    if x > 0:
-        result = f'{result} delayed'
-    else:
-        result = f'{result} early'
+            if diff == 1:
+                result = "1 minute"
+            elif diff < 90:
+                result = f"{diff} minutes"
+            else:
+                hours = diff // 60
+                minutes = diff % 60
+                if hours == 1:
+                    hour_str = "1 hr."
+                else:
+                    hour_str = f"{hours} hrs."
+                if minutes == 1:
+                    minute_str = "1 min."
+                else:
+                    minute_str = f"{minutes} mins."
+                result = f"{hour_str}, {minute_str}"
+            if x > 0:
+                result = f'<span class="schedule_delayed">{result} delayed</span>'
+            else:
+                result = f'<span class="schedule_early">{result} early</span>'
     
     return result
 
@@ -203,7 +196,6 @@ env.filters['render_time_pair'] = render_time_pair
 env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
 env.filters['render_climb'] = render_climb
-env.filters['format_schedule'] = format_schedule
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for
