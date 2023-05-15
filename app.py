@@ -7,9 +7,10 @@ from adsb_tools.receiver import Receiver
 from adsb_tools.wake_vortex import WakeVortexCategories
 from adsb_tools.utils import dt_utils
 import adsb_tools.weather
-import math
 # from pprint import pprint
 from flask import Flask, render_template, session, request, url_for
+import src.env_filters as env_filters
+import src.svg_generators as svg_generators
 from src.utils.flask_utils import return_json
 from src.utils.session_utils import get_config
 
@@ -56,19 +57,6 @@ stuff = {
     }
 }
 
-
-def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
-    result = unknown
-    print('dict_to_check')
-    print(dict_to_check)
-    if dict_to_check is None or len(dict_to_check) == 0:
-        result = unknown
-    elif key not in dict_to_check or dict_to_check[key] is None or len(dict_to_check[key]) == 0:
-        result = unknown
-    else:
-        result = dict_to_check[key]
-    return result
-
 def render_flightaware(flightaware, identity, local_timezone_name):
     if flightaware is None or len(flightaware) == 0:
         return '<div/>'
@@ -112,76 +100,8 @@ def get_time_diff_class(actual_time, scheduled_time):
 
     return td_class
 
-def render_climb(baro_rate, altitude):
-    result = f'Flying at {altitude} ft'
-    if baro_rate > 10:
-        result = f'Climbing {baro_rate} ft/min from {altitude} ft'
-    elif baro_rate < -10:
-        result = f'Descending {abs(baro_rate)} ft/min from {altitude} ft'
-    return result
 
 
-def draw_line(angle, unit_size):
-    # Convert negative angles to their positive equivalent
-    while angle < 0:
-        angle += 360
-
-    print('angle')
-    print(angle)
-
-    # Calculate the center point of the square
-    center_x, center_y = 0,0
-
-    # Calculate the endpoint of the line based on the given angle
-    end_x = math.sin(math.radians(angle))
-    end_y = 0 - math.cos(math.radians(angle))
-
-    # Scale the coordinates by the unit size
-    center_x += unit_size
-    center_y += unit_size
-    end_x = end_x * unit_size + unit_size
-    end_y = end_y * unit_size + unit_size
-
-    # Build the SVG code as a string
-    svg_code = '<svg viewBox="0 0 ' + str(2*unit_size) + ' ' +  str(2*unit_size) +'" xmlns="http://www.w3.org/2000/svg">'
-    svg_code += f'<circle cx="{unit_size}" cy="{unit_size}" r="{0.05 * unit_size}" fill="red" />'
-    svg_code += '<line x1="' + str(center_x) + '" y1="' + str(center_y) + '" x2="' + str(end_x) + '" y2="' + str(end_y) + '" stroke="red" stroke-width="2" />'
-    svg_code += '</svg>'
-
-    # Return the SVG code as a string
-    return svg_code
-
-def render_schedule_diff(x):
-    if x is None:
-        result = 'unknown scheduling'
-    else:
-        diff = round(abs(x))
-        result = ''
-        if diff == 0:
-            result = 'On time'
-        else:
-            if diff == 1:
-                result = "1 minute"
-            elif diff < 90:
-                result = f"{diff} minutes"
-            else:
-                hours = diff // 60
-                minutes = diff % 60
-                if hours == 1:
-                    hour_str = "1 hr."
-                else:
-                    hour_str = f"{hours} hrs."
-                if minutes == 1:
-                    minute_str = "1 min."
-                else:
-                    minute_str = f"{minutes} mins."
-                result = f"{hour_str}, {minute_str}"
-            if x > 0:
-                result = f'<span class="schedule_delayed">{result} delayed</span>'
-            else:
-                result = f'<span class="schedule_early">{result} early</span>'
-    
-    return result
 
 
 env = Environment(loader=FileSystemLoader('templates'))
@@ -189,13 +109,15 @@ env.filters['format_datetime'] = dt_utils.format_datetime
 env.filters['format_date_short'] = dt_utils.format_date_short
 env.filters['format_time_short'] = dt_utils.format_time_short
 env.filters['format_tz'] = dt_utils.format_tz
-env.filters['render_schedule_diff'] = render_schedule_diff
-env.filters['render_or_unknown'] = render_or_unknown
+env.filters['render_schedule_diff'] = env_filters.render_schedule_diff
+env.filters['render_or_unknown'] = env_filters.render_or_unknown
 env.filters['render_flightaware'] = render_flightaware
 env.filters['render_time_pair'] = render_time_pair
 env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
-env.filters['render_climb'] = render_climb
+env.filters['render_climb'] = env_filters.render_climb
+
+print(env.filters)
 
 def add_flask_built_ins(context):
     context['url_for'] = url_for
@@ -249,7 +171,7 @@ def get_index():
 
 
     angle = aircraft.nearest_aircraft['distance']['degrees']
-    svg = draw_line(angle, 100)
+    svg = svg_generators.draw_line(angle, 100)
     print('svg')
     print(svg)
     print('svg')
