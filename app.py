@@ -48,6 +48,10 @@ stuff = {
             'label': 'Wake Vortex Categories',
             'url': 'wtc'
         },
+        'ffring_base_weather': {
+            'label': 'Base Weather',
+            'url': 'weather/base'
+        },
         'urls': {
             'aircraft': f'{BASE_ADSB_URL}/data/aircraft.json',
             'stats': f'{BASE_ADSB_URL}/data/stats.json',
@@ -191,6 +195,7 @@ def get_index():
     params['system']['ffring_aircraft']['url'] = f"{request.url_root}aircraft"
     params['system']['ffring_aircraft_nearest']['url'] = f"{request.url_root}aircraft/nearest"
     params['system']['ffring_wtc']['url'] = f"{request.url_root}wtc"
+    params['system']['ffring_base_weather']['url'] = f"{request.url_root}weather/base"
     add_flask_built_ins(params)
 
     template = env.get_template('index.html')

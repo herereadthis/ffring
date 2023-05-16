@@ -14,6 +14,8 @@ def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
 
 def render_climb(baro_rate, altitude):
     result = f'Flying at {altitude} ft'
+    if baro_rate is None:
+        result = f'Unknown climb rate, flying at {altitude} ft'
     if baro_rate > 10:
         result = f'Climbing {baro_rate} ft/min from {altitude} ft'
     elif baro_rate < -10:
