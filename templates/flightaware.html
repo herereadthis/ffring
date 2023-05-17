@@ -1,5 +1,5 @@
 
-<div class="flightinfo_itinenary flightaware">
+<div class="flightinfo_itinenary flightaware" id="flightaware_itinerary">
     <div class="origin">
         <p class="text_medium title">Origin</p>
         <p class="text_normal airport_name">{{ origin|render_or_unknown('name', '<em>Unknown Airport</em>') }}</p>
@@ -36,4 +36,19 @@
         {{ 'Landing'|render_time_pair(estimated_on, scheduled_on, destination['timezone']) }}
         <p class="text_normal time_diff">{{ diff_arrival_minutes|default(None)|render_schedule_diff }}</p>
     </div>
+    <div id="little_plane"></div>
 </div>
+<script>
+    const faItinerary = document.querySelectorAll('.flightinfo_itinenary.flightaware')[0];
+    const littlePlane = document.querySelectorAll('#little_plane')[0];
+    console.log(littlePlane);
+    const {
+        height,
+        width
+    } = faItinerary.getBoundingClientRect();
+    const boundingRect = faItinerary.getBoundingClientRect();
+    console.log(height, width);
+    console.log(boundingRect)
+    littlePlane.style.left = `${width - 18}px`;
+    littlePlane.style.top = `${height - 18}px`;
+</script>
