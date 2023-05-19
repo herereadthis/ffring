@@ -2,8 +2,6 @@ import math
 
 def render_or_unknown(dict_to_check, key, unknown = 'unknown'):
     result = unknown
-    print('dict_to_check')
-    print(dict_to_check)
     if dict_to_check is None or len(dict_to_check) == 0:
         result = unknown
     elif key not in dict_to_check or dict_to_check[key] is None or len(dict_to_check[key]) == 0:

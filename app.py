@@ -121,8 +121,6 @@ env.filters['render_weather'] = render_weather
 env.filters['get_time_diff_class'] = get_time_diff_class
 env.filters['render_climb'] = env_filters.render_climb
 
-print(env.filters)
-
 def add_flask_built_ins(context):
     context['url_for'] = url_for
     return context
